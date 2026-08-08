@@ -275,3 +275,198 @@ Desde el punto de vista académico, el proyecto permite integrar conocimientos r
 El principal valor agregado consiste en la integración de Inteligencia Artificial para interpretar automáticamente la descripción proporcionada por el ciudadano, identificar la naturaleza del problema y asignar una prioridad.
 
 Además, la integración con servicios externos permite enriquecer la información geográfica de los reportes.
+
+# Requerimientos del sistema
+
+## Requerimientos Funcionales y No Funcionales
+
+Los requerimientos del sistema definen las funcionalidades que debe proporcionar la API y las características técnicas y de calidad que debe cumplir la solución.
+
+Se clasifican en:
+
+- **Requerimientos Funcionales (RF):** describen las funciones y servicios que ofrece el sistema.
+- **Requerimientos No Funcionales (RNF):** establecen características técnicas, restricciones y criterios de calidad.
+
+---
+
+## Requerimientos Funcionales
+
+Los requerimientos funcionales describen las funcionalidades que debe implementar la API para satisfacer las necesidades de los usuarios y cumplir los objetivos definidos para el proyecto.
+
+| ID | Requerimiento funcional | Prioridad | Estado |
+|---|---|---|---|
+| FR-01 | El sistema deberá permitir registrar un nuevo reporte ciudadano proporcionando el título, la descripción y la dirección del incidente. | Alta | Planificado |
+| FR-02 | El sistema deberá permitir consultar todos los reportes ciudadanos registrados. | Alta | Planificado |
+| FR-03 | El sistema deberá permitir consultar un reporte específico mediante su identificador único. | Alta | Planificado |
+| FR-04 | El sistema deberá permitir actualizar la información de un reporte existente. | Alta | Planificado |
+| FR-05 | El sistema deberá permitir eliminar un reporte previamente registrado. | Alta | Planificado |
+| FR-06 | El sistema deberá analizar automáticamente cada reporte mediante la API de Groq una vez sea registrado. | Alta | Planificado |
+| FR-07 | El sistema deberá clasificar automáticamente el reporte dentro de una categoría de problemática urbana. | Alta | Planificado |
+| FR-08 | El sistema deberá asignar automáticamente un nivel de prioridad al reporte utilizando Inteligencia Artificial. | Alta | Planificado |
+| FR-09 | El sistema deberá generar un resumen automático del incidente reportado. | Media | Planificado |
+| FR-10 | El sistema deberá generar una recomendación para la atención del incidente utilizando Inteligencia Artificial. | Media | Planificado |
+| FR-11 | El sistema deberá almacenar el resultado del análisis realizado por la IA asociado al reporte correspondiente. | Alta | Planificado |
+| FR-12 | El sistema deberá consultar el análisis generado para un reporte determinado. | Media | Planificado |
+| FR-13 | El sistema deberá permitir consultar reportes filtrando por categoría. | Alta | Planificado |
+| FR-14 | El sistema deberá permitir consultar reportes filtrando por estado. | Alta | Planificado |
+| FR-15 | El sistema deberá permitir consultar reportes filtrando por prioridad. | Alta | Planificado |
+| FR-16 | El sistema deberá permitir consultar reportes mediante un rango de fechas. | Media | Planificado |
+| FR-17 | El sistema deberá consumir una API externa de geocodificación para complementar la información geográfica del reporte cuando corresponda. | Media | Planificado |
+| FR-18 | El sistema deberá responder las solicitudes mediante servicios REST utilizando formato JSON. | Alta | Planificado |
+
+---
+
+## Requerimientos No Funcionales
+
+Los requerimientos no funcionales establecen las características técnicas y de calidad que debe cumplir el sistema durante su implementación y operación.
+
+| ID | Requerimiento no funcional | Categoría | Estado |
+|---|---|---|---|
+| RNF-01 | La API deberá desarrollarse utilizando ASP.NET Core 8 y C#. | Plataforma | Planificado |
+| RNF-02 | El acceso a la base de datos deberá implementarse mediante Entity Framework Core. | Persistencia | Planificado |
+| RNF-03 | La información deberá almacenarse de forma persistente utilizando SQLite durante el desarrollo. | Base de datos | Planificado |
+| RNF-04 | La comunicación entre servicios deberá realizarse utilizando el protocolo HTTP y datos en formato JSON. | Interoperabilidad | Planificado |
+| RNF-05 | La integración con Groq deberá realizarse mediante HttpClient. | Integración | Planificado |
+| RNF-06 | La integración con la API de geocodificación deberá realizarse mediante HttpClient. | Calidad | Planificado |
+| RNF-08 | La API deberá documentarse mediante Swagger/OpenAPI. | Documentación | Planificado |
+| RNF-09 | El código deberá organizarse siguiendo una arquitectura modular y orientada a servicios. | Arquitectura | Planificado |
+| RNF-10 | El sistema deberá implementar DTOs para la transferencia de información entre la API y los consumidores. | Diseño | Planificado |
+| RNF-11 | El sistema deberá manejar adecuadamente las excepciones y devolver códigos HTTP apropiados. | Robustez | Planificado |
+| RNF-12 | El proyecto deberá mantenerse bajo control de versiones mediante Git y GitHub. | Gestión | Planificado |
+
+> **Nota:** La numeración de los requerimientos se conserva de acuerdo con la documentación original de la Fase 1. Por esta razón, después de `RNF-06` aparece `RNF-08`.
+
+---
+
+# Tecnologías utilizadas
+
+El Sistema Inteligente de Reportes Ciudadanos con IA se desarrolla utilizando tecnologías del ecosistema .NET y servicios externos destinados a construir una API REST modular, mantenible y preparada para integrar capacidades de Inteligencia Artificial.
+
+## Stack tecnológico
+
+| Tecnología | Versión / Tipo | Función |
+|---|---|---|
+| .NET SDK | 8 LTS | Plataforma de desarrollo y ejecución de la aplicación. |
+| C# | 12 | Lenguaje utilizado para implementar la lógica del sistema. |
+| ASP.NET Core | 8 | Framework utilizado para desarrollar la API REST. |
+| Entity Framework Core | 8 | ORM encargado del acceso y gestión de la base de datos. |
+| SQLite | Estable | Base de datos utilizada durante el desarrollo y las pruebas. |
+| Groq API | Servicio externo | Procesamiento mediante Inteligencia Artificial. |
+| API de Geocodificación | Servicio externo | Obtención y validación de información geográfica. |
+| HttpClient | .NET | Consumo de APIs externas. |
+| Swagger / OpenAPI | Compatible | Documentación interactiva y pruebas de la API. |
+| Git | Control de versiones | Seguimiento de cambios realizados durante el desarrollo. |
+| GitHub | Repositorio remoto | Almacenamiento y colaboración sobre el código fuente. |
+
+---
+
+## Descripción de las tecnologías
+
+### .NET 8
+
+Plataforma utilizada como base para el desarrollo y ejecución de la aplicación.
+
+### C# 12
+
+Lenguaje de programación utilizado para implementar los modelos, servicios, controladores, DTOs y demás componentes de la solución.
+
+### ASP.NET Core 8
+
+Framework utilizado para construir la API REST y gestionar las solicitudes HTTP realizadas por los consumidores del sistema.
+
+### Entity Framework Core 8
+
+ORM utilizado para facilitar la comunicación entre la aplicación y la base de datos.
+
+Permite trabajar con los datos mediante objetos de C# y administrar las operaciones de persistencia.
+
+### SQLite
+
+Motor de base de datos utilizado durante el desarrollo y las pruebas para almacenar de forma persistente la información de los reportes y los resultados asociados.
+
+### Groq API
+
+Servicio externo utilizado para incorporar capacidades de Inteligencia Artificial.
+
+El análisis permite obtener información como:
+
+- Categoría.
+- Prioridad.
+- Resumen.
+- Recomendación.
+
+### API de Geocodificación
+
+Servicio externo utilizado para complementar la información geográfica asociada a los reportes ciudadanos.
+
+### HttpClient
+
+Componente de .NET utilizado para realizar solicitudes HTTP hacia los servicios externos integrados con la aplicación.
+
+### Swagger / OpenAPI
+
+Herramienta utilizada para documentar y probar los endpoints de la API de forma interactiva.
+
+### Git y GitHub
+
+Herramientas utilizadas para el control de versiones, seguimiento de cambios y almacenamiento remoto del proyecto.
+
+---
+
+# Integración de servicios externos
+
+La solución contempla la integración con servicios externos para ampliar las capacidades de la API.
+
+Las principales integraciones definidas son:
+
+| Servicio | Propósito | Método de integración |
+|---|---|---|
+| Groq API | Analizar el contenido de los reportes mediante Inteligencia Artificial. | HttpClient + REST + JSON |
+| API de Geocodificación | Validar y complementar la ubicación del reporte. | HttpClient + REST + JSON |
+
+---
+
+## Integración con Groq
+
+La API de Groq permite analizar automáticamente la información textual de los reportes ciudadanos.
+
+### Información enviada
+
+La aplicación proporciona a Groq información relacionada con el reporte, principalmente:
+
+- Título.
+- Descripción.
+
+### Información recibida
+
+El análisis generado puede proporcionar:
+
+- Categoría.
+- Prioridad.
+- Resumen.
+- Recomendación.
+
+### Flujo general
+
+```text
+Reporte ciudadano
+       │
+       ▼
+API REST
+       │
+       ▼
+Servicio de IA
+       │
+       ▼
+Groq API
+       │
+       ▼
+Análisis del reporte
+       │
+       ├── Categoría
+       ├── Prioridad
+       ├── Resumen
+       └── Recomendación
+       │
+       ▼
+Persistencia del resultado
