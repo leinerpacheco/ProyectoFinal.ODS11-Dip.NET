@@ -1182,3 +1182,248 @@ Procesamiento de la solicitud
 ```
 
 ---
+
+# 16. Servicios (Services)
+
+## 16.1 Objetivo
+
+Implementar la lógica de negocio de la aplicación mediante servicios independientes, evitando que los controladores contengan directamente las reglas de procesamiento del sistema.
+
+Los servicios permiten centralizar las operaciones relacionadas con los reportes ciudadanos y las integraciones con servicios externos.
+
+---
+
+## 16.2 Servicios del Sistema
+
+Los principales servicios definidos para el sistema son:
+
+| Servicio | Responsabilidad |
+|---|---|
+| `ReporteService` | Gestiona la lógica de negocio relacionada con los reportes ciudadanos. |
+| `GroqService` | Gestiona la comunicación con la API de Groq y el análisis mediante Inteligencia Artificial. |
+| `GeocodingService` | Gestiona la comunicación con el servicio de geocodificación para obtener información geográfica. |
+
+Los servicios se integran con los controladores mediante interfaces e inyección de dependencias.
+
+---
+
+## 16.3 ReporteService
+
+El servicio `ReporteService` concentra la lógica de negocio relacionada con los reportes ciudadanos.
+
+### Responsabilidades principales
+
+- Crear nuevos reportes.
+- Consultar reportes.
+- Consultar reportes por identificador.
+- Actualizar reportes.
+- Eliminar reportes.
+- Aplicar filtros de consulta.
+- Coordinar el procesamiento de los reportes con otros servicios.
+
+### Operaciones principales
+
+| Operación | Descripción |
+|---|---|
+| Crear | Registra un nuevo reporte en el sistema. |
+| Consultar | Obtiene los reportes registrados. |
+| Consultar por ID | Obtiene un reporte específico mediante su identificador. |
+| Actualizar | Modifica la información de un reporte existente. |
+| Eliminar | Elimina un reporte existente. |
+| Filtrar | Permite consultar reportes aplicando diferentes criterios. |
+
+### Flujo de creación
+
+```text
+CrearReporteDto
+       │
+       ▼
+ReporteService
+       │
+       ├──────────────► Validación
+       │
+       ├──────────────► Geocodificación
+       │
+       ├──────────────► Análisis IA
+       │
+       ▼
+ApplicationDbContext
+       │
+       ▼
+Base de Datos
+       │
+       ▼
+ReporteDto
+```
+
+---
+
+## 16.4 GroqService
+
+El servicio `GroqService` se encarga de establecer la comunicación con la API de Groq para realizar el análisis inteligente de los reportes ciudadanos.
+
+### Responsabilidades
+
+- Construir las solicitudes dirigidas a Groq.
+- Enviar información del reporte mediante `HttpClient`.
+- Procesar la respuesta obtenida.
+- Extraer la información generada por el modelo de Inteligencia Artificial.
+- Transformar el resultado al formato utilizado por la aplicación.
+- Manejar errores de comunicación con el servicio externo.
+
+### Información analizada
+
+El análisis puede determinar información como:
+
+- Categoría del reporte.
+- Nivel de prioridad.
+- Resumen.
+- Recomendación de atención.
+
+### Flujo de comunicación
+
+```text
+Reporte ciudadano
+       │
+       ▼
+GroqService
+       │
+       │ HTTP Request
+       ▼
+Groq API
+       │
+       │ Respuesta
+       ▼
+GroqService
+       │
+       ▼
+Resultado del análisis IA
+```
+
+---
+
+## 16.5 GeocodingService
+
+El servicio `GeocodingService` permite complementar la información de ubicación de los reportes ciudadanos mediante un servicio externo de geocodificación.
+
+### Responsabilidades
+
+- Recibir una dirección.
+- Consultar el servicio de geocodificación.
+- Obtener coordenadas geográficas.
+- Procesar la respuesta.
+- Devolver latitud y longitud cuando la ubicación sea encontrada.
+- Manejar los casos en los que el servicio no responda o no encuentre resultados.
+
+### Flujo de geocodificación
+
+```text
+Dirección del reporte
+       │
+       ▼
+GeocodingService
+       │
+       │ Solicitud HTTP
+       ▼
+API de Geocodificación
+       │
+       │ Latitud / Longitud
+       ▼
+GeocodingService
+       │
+       ▼
+Información geográfica
+```
+
+### Manejo de resultados
+
+Si el servicio de geocodificación encuentra la ubicación correspondiente, las coordenadas serán asociadas al reporte.
+
+Cuando no sea posible obtener las coordenadas, el sistema conservará la dirección proporcionada por el ciudadano y continuará con el procesamiento del reporte.
+
+---
+
+## 16.6 Flujo de Ejecución
+
+El flujo general de ejecución de los servicios se representa de la siguiente manera:
+
+```text
+Cliente
+   │
+   ▼
+ReporteController
+   │
+   ▼
+ReporteService
+   │
+   ├──────────────► GeocodingService
+   │                       │
+   │                       ▼
+   │               API de Geocodificación
+   │
+   ├──────────────► GroqService
+   │                       │
+   │                       ▼
+   │                    Groq API
+   │
+   ▼
+ApplicationDbContext
+   │
+   ▼
+Base de Datos
+   │
+   ▼
+ReporteController
+   │
+   ▼
+Respuesta JSON
+```
+
+---
+
+## 16.7 Responsabilidades
+
+La separación de responsabilidades entre los servicios permite mantener una arquitectura organizada y facilitar el mantenimiento del sistema.
+
+| Componente | Responsabilidad |
+|---|---|
+| `ReporteController` | Recibir solicitudes HTTP y devolver respuestas. |
+| `ReporteService` | Ejecutar la lógica de negocio de los reportes. |
+| `GroqService` | Gestionar el análisis mediante Inteligencia Artificial. |
+| `GeocodingService` | Gestionar la obtención de coordenadas geográficas. |
+| `ApplicationDbContext` | Gestionar el acceso a la base de datos. |
+
+Esta separación evita concentrar toda la lógica de la aplicación dentro de los controladores.
+
+---
+
+## 16.8 Consideraciones
+
+Para la implementación de los servicios se consideran los siguientes aspectos:
+
+- Utilización de interfaces para definir contratos.
+- Inyección de dependencias mediante ASP.NET Core.
+- Uso de `HttpClient` para las comunicaciones externas.
+- Manejo controlado de errores.
+- Separación entre lógica de negocio e infraestructura.
+- Reutilización de los servicios desde diferentes componentes.
+- Preparación de la arquitectura para futuras ampliaciones.
+
+### Inyección de dependencias
+
+Los servicios serán registrados en el contenedor de dependencias de ASP.NET Core para que puedan ser utilizados por los controladores y otros componentes de la aplicación.
+
+```text
+ASP.NET Core
+     │
+     ▼
+Contenedor de Dependencias
+     │
+     ├── IReporteService → ReporteService
+     │
+     ├── IGroqService → GroqService
+     │
+     └── IGeocodingService → GeocodingService
+```
+
+---
