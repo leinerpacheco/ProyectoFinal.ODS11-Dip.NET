@@ -1116,9 +1116,7 @@ Definir las reglas de validación que deberán cumplir los datos recibidos por l
 | `Descripcion` | Obligatorio | La descripción es obligatoria. |
 | `Descripcion` | Entre 20 y 1000 caracteres | La descripción debe tener entre 20 y 1000 caracteres. |
 | `Direccion` | Obligatoria | La dirección es obligatoria. |
-| `Direccion` | Máximo 100 caracteres | La dirección no puede superar los 200 caracteres. |
-
-> **Nota:** La documentación de Fase 2 presenta una inconsistencia en esta última regla: la columna `Regla` indica "Máximo 100 caracteres", mientras que el mensaje indica "no puede superar los 200 caracteres". Se conserva el contenido documentado para mantener fidelidad con la fuente.
+| `Direccion` | Máximo 100 caracteres | La dirección no puede superar los 100 caracteres. |
 
 ---
 
