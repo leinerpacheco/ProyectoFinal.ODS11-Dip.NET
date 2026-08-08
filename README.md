@@ -11,12 +11,6 @@
 API REST desarrollada con **ASP.NET Core**, **Entity Framework Core**, **SQLite**, **Groq IA** y consumo de **APIs externas** mediante **HttpClient**.
 </div>
 
-# Sistema Inteligente de Reportes Ciudadanos con IA
-
-API REST desarrollada con **ASP.NET Core 8** para la gestión de reportes ciudadanos relacionados con problemáticas urbanas, incorporando **Inteligencia Artificial mediante la API de Groq**, servicios externos de geocodificación y persistencia de información mediante una base de datos relacional.
-
-El sistema está orientado al registro, consulta, actualización, eliminación y análisis inteligente de reportes relacionados con situaciones que afectan la infraestructura y los espacios públicos.
-
 ---
 
 ## Tabla de contenido
@@ -42,6 +36,14 @@ El sistema está orientado al registro, consulta, actualización, eliminación y
 - [Conclusiones](#conclusiones)
 - [Posibles mejoras futuras](#posibles-mejoras-futuras)
 - [Autores](#autores)
+
+---
+
+# Sistema Inteligente de Reportes Ciudadanos con IA
+
+API REST desarrollada con **ASP.NET Core 8** para la gestión de reportes ciudadanos relacionados con problemáticas urbanas, incorporando **Inteligencia Artificial mediante la API de Groq**, servicios externos de geocodificación y persistencia de información mediante una base de datos relacional.
+
+El sistema está orientado al registro, consulta, actualización, eliminación y análisis inteligente de reportes relacionados con situaciones que afectan la infraestructura y los espacios públicos.
 
 ---
 
