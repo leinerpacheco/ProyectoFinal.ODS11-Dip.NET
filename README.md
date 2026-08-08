@@ -2341,4 +2341,251 @@ La siguiente captura corresponde a la ejecución del endpoint `DELETE /api/repor
 
 ---
 
+---
 
+## 21.9 CP-009 — Análisis inteligente de un reporte mediante IA
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-009` |
+| **Endpoint** | `POST /api/reportes/{id}/analizar` |
+| **Tipo de prueba** | Integración con IA |
+| **Objetivo** | Verificar que la API envía correctamente un reporte a Groq y recibe un análisis automatizado. |
+| **Datos de entrada** | `id = 3` |
+| **Resultado esperado** | La IA clasifica el reporte, asigna una prioridad, genera un resumen y una recomendación. |
+| **Resultado obtenido** | La IA respondió correctamente con la categoría, prioridad, resumen y recomendación del reporte. |
+| **Código HTTP** | `200 OK` |
+| **Estado** | **Aprobado** |
+
+### Evidencia
+
+La siguiente captura corresponde a la ejecución exitosa del endpoint `POST /api/reportes/{id}/analizar`. La aplicación envió el reporte a Groq y recibió el análisis generado mediante Inteligencia Artificial.
+
+![CP-009 - Análisis inteligente mediante IA](docs/evidencias/CP-009.jpg)
+
+### Resultado de la evidencia
+
+| Evidencia | Estado |
+|---|---|
+| Análisis del reporte mediante IA | **Validado con evidencia** |
+
+---
+
+## 21.10 CP-010 — Persistencia del análisis generado por IA
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-010` |
+| **Endpoint** | `GET /api/reportes/{id}` |
+| **Tipo de prueba** | Integración / Persistencia |
+| **Objetivo** | Verificar que el análisis generado por Groq se almacena correctamente en la base de datos. |
+| **Datos de entrada** | `id = 3` |
+| **Resultado esperado** | El reporte contiene la categoría, prioridad y el objeto `analisisIA` con el resumen, la recomendación y la fecha del análisis. |
+| **Resultado obtenido** | El reporte fue recuperado correctamente y contiene toda la información generada por la IA. |
+| **Código HTTP** | `200 OK` |
+| **Estado** | **Aprobado** |
+
+### Evidencia
+
+La siguiente captura corresponde a la consulta del reporte mediante `GET /api/reportes/{id}` después de ejecutar el análisis mediante IA.
+
+![CP-010 - Persistencia del análisis IA](docs/evidencias/CP-010.jpg)
+
+### Verificación
+
+La respuesta permite comprobar que la categoría, la prioridad y el objeto `analisisIA` fueron almacenados correctamente y posteriormente recuperados desde la base de datos.
+
+### Resultado de la evidencia
+
+| Evidencia | Estado |
+|---|---|
+| Persistencia del análisis generado por IA | **Validado con evidencia** |
+
+---
+
+## 21.11 CP-011 — Validación del campo obligatorio Título
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-011` |
+| **Endpoint** | `POST /api/reportes` |
+| **Tipo de prueba** | Validación |
+| **Objetivo** | Verificar que el sistema impida la creación de un reporte cuando el campo `Título` se envía vacío. |
+| **Resultado esperado** | La API rechaza la solicitud y devuelve HTTP `400 Bad Request`, indicando que el campo es obligatorio y que debe cumplir las restricciones de longitud configuradas. |
+| **Resultado obtenido** | La API rechazó correctamente la solicitud con HTTP `400 Bad Request` y mostró los mensajes de validación correspondientes. |
+| **Estado** | **Aprobado** |
+
+### Evidencia 1
+
+La primera captura corresponde al envío del reporte con el campo `Título` vacío.
+
+![CP-011 - Validación del campo Título - Parte 1](docs/evidencias/CP-011.jpg)
+
+### Evidencia 2
+
+La segunda captura permite visualizar la respuesta de la API y los mensajes asociados a la validación del campo obligatorio.
+
+![CP-011 - Validación del campo Título - Parte 2](docs/evidencias/CP-011-2.jpg)
+
+### Resultado de la evidencia
+
+| Evidencia | Estado |
+|---|---|
+| Rechazo de solicitud con título vacío | **Validado con evidencia** |
+| Respuesta HTTP `400 Bad Request` | **Validado con evidencia** |
+
+---
+
+## 21.12 CP-012 — Validación del campo obligatorio Descripción
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-012` |
+| **Endpoint** | `POST /api/reportes` |
+| **Tipo de prueba** | Validación |
+| **Objetivo** | Verificar que la API rechace la creación de un reporte cuando el campo `Descripción` se envía vacío o no cumple la longitud mínima definida. |
+| **Resultado esperado** | La API rechaza la solicitud con HTTP `400 Bad Request` y muestra los mensajes correspondientes a la validación del campo. |
+| **Resultado obtenido** | La API rechazó correctamente la solicitud cuando la descripción estaba vacía y mostró los mensajes correspondientes sobre obligatoriedad y longitud permitida. |
+| **Estado** | **Aprobado** |
+
+### Evidencia 1
+
+La primera captura corresponde al envío del reporte con el campo `Descripción` vacío.
+
+![CP-012 - Validación del campo Descripción - Parte 1](docs/evidencias/CP-012.jpg)
+
+### Evidencia 2
+
+La segunda captura permite visualizar la respuesta de la API y los mensajes generados por la validación.
+
+![CP-012 - Validación del campo Descripción - Parte 2](docs/evidencias/CP-012-2.jpg)
+
+### Resultado de la evidencia
+
+| Evidencia | Estado |
+|---|---|
+| Rechazo de solicitud con descripción vacía | **Validado con evidencia** |
+| Respuesta HTTP `400 Bad Request` | **Validado con evidencia** |
+
+---
+
+## 21.13 CP-013 — Validación del campo obligatorio Dirección
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-013` |
+| **Endpoint** | `POST /api/reportes` |
+| **Tipo de prueba** | Validación |
+| **Objetivo** | Verificar que la API rechace la creación de un reporte cuando el campo `Dirección` se envía vacío o no cumple la longitud mínima definida. |
+| **Resultado esperado** | La API rechaza la solicitud con HTTP `400 Bad Request` y muestra los mensajes correspondientes a la validación del campo. |
+| **Resultado obtenido** | La API rechazó correctamente la solicitud cuando la dirección estaba vacía y mostró los mensajes correspondientes sobre obligatoriedad y longitud permitida. |
+| **Estado** | **Aprobado** |
+
+### Evidencia 1
+
+La primera captura corresponde al envío del reporte con el campo `Dirección` vacío.
+
+![CP-013 - Validación del campo Dirección - Parte 1](docs/evidencias/CP-013.jpg)
+
+### Evidencia 2
+
+La segunda captura permite visualizar la respuesta de la API y los mensajes generados por la validación del campo obligatorio.
+
+![CP-013 - Validación del campo Dirección - Parte 2](docs/evidencias/CP-013-2.jpg)
+
+### Resultado de la evidencia
+
+| Evidencia | Estado |
+|---|---|
+| Rechazo de solicitud con dirección vacía | **Validado con evidencia** |
+| Respuesta HTTP `400 Bad Request` | **Validado con evidencia** |
+
+---
+
+## 21.14 Resumen General de las Pruebas Ejecutadas
+
+### Resumen de pruebas funcionales y de calidad
+
+Durante el proceso de aseguramiento de la calidad (QA) se ejecutaron pruebas funcionales, de integración, validación y manejo de errores sobre los principales componentes del Sistema Inteligente de Reportes Ciudadanos con IA.
+
+El objetivo fue verificar el correcto funcionamiento de la API REST, la persistencia de los datos, la integración con servicios externos, la generación y persistencia del análisis mediante Inteligencia Artificial y el cumplimiento de las reglas de validación implementadas.
+
+Las pruebas permitieron comprobar el funcionamiento de las operaciones CRUD de reportes, la geocodificación automática de direcciones, la integración con la API de Groq para el análisis inteligente de reportes y la validación de los datos de entrada.
+
+En todos los casos evaluados se obtuvo el comportamiento esperado, evidenciando que la aplicación responde correctamente ante solicitudes de creación, consulta, actualización, eliminación, análisis mediante IA y solicitudes con datos inválidos.
+
+---
+
+### Matriz General de Casos de Prueba
+
+| Código | Endpoint / Operación | Tipo de prueba | Resultado | Estado |
+|---|---|---|---|---|
+| `CP-001` | `POST /api/reportes` | Creación de reporte | HTTP `201` | **Aprobado** |
+| `CP-002` | `GET /api/reportes` | Consulta general | HTTP `200` | **Aprobado** |
+| `CP-003` | `GET /api/reportes/{id}` | Caso válido | HTTP `200` | **Aprobado** |
+| `CP-004` | `GET /api/reportes/{id}` | Caso inválido | HTTP `404` | **Aprobado** |
+| `CP-005` | `PUT /api/reportes/{id}` | Caso válido | HTTP `200` | **Aprobado** |
+| `CP-006` | `PUT /api/reportes/{id}` | Caso inválido | HTTP `404` | **Aprobado** |
+| `CP-007` | `DELETE /api/reportes/{id}` | Caso válido | HTTP `204` | **Aprobado** |
+| `CP-008` | `DELETE /api/reportes/{id}` | Caso inválido | HTTP `404` | **Aprobado** |
+| `CP-009` | `POST /api/reportes/{id}/analizar` | Integración con IA | HTTP `200` | **Aprobado** |
+| `CP-010` | `GET /api/reportes/{id}` | Persistencia del análisis IA | HTTP `200` | **Aprobado** |
+| `CP-011` | `POST /api/reportes` | Validación de Título | HTTP `400` | **Aprobado** |
+| `CP-012` | `POST /api/reportes` | Validación de Descripción | HTTP `400` | **Aprobado** |
+| `CP-013` | `POST /api/reportes` | Validación de Dirección | HTTP `400` | **Aprobado** |
+
+---
+
+### Resultado general
+
+| Indicador | Resultado |
+|---|---:|
+| **Total de casos ejecutados** | **13** |
+| **Casos aprobados** | **13** |
+| **Casos fallidos** | **0** |
+| **Porcentaje de éxito** | **100 %** |
+
+Las pruebas fueron ejecutadas sobre la implementación funcional del proyecto utilizando Swagger como herramienta principal de validación y fueron respaldadas mediante capturas de pantalla. :contentReference[oaicite:1]{index=1}
+
+---
+
+## 21.15 Checklist Final de QA
+
+Antes de la entrega del proyecto se verificó el cumplimiento de los principales requisitos funcionales y técnicos establecidos para la aplicación.
+
+| Verificación | Estado |
+|---|---|
+| API REST implementada | **✔ Cumplido** |
+| CRUD completamente funcional | **✔ Cumplido** |
+| Persistencia en SQLite | **✔ Cumplido** |
+| Entity Framework Core configurado | **✔ Cumplido** |
+| Swagger operativo | **✔ Cumplido** |
+| Geocodificación automática | **✔ Cumplido** |
+| Integración con Groq | **✔ Cumplido** |
+| Generación automática del análisis IA | **✔ Cumplido** |
+| Persistencia del análisis IA | **✔ Cumplido** |
+| Validaciones de entrada implementadas | **✔ Cumplido** |
+| Manejo de errores HTTP | **✔ Cumplido** |
+| Evidencias de funcionamiento recopiladas | **✔ Cumplido** |
+| Casos válidos documentados | **✔ Cumplido** |
+| Casos inválidos documentados | **✔ Cumplido** |
+
+### Estado final
+
+El proyecto cumple satisfactoriamente los criterios de calidad definidos para su entrega, evidenciando el correcto funcionamiento de los componentes desarrollados y la integración entre los diferentes servicios utilizados. :contentReference[oaicite:3]{index=3}
+
+---
+
+## 21.16 Conclusiones del Proceso de QA
+
+El proceso de aseguramiento de la calidad permitió validar el correcto funcionamiento del Sistema Inteligente de Reportes Ciudadanos con IA, verificando tanto las operaciones CRUD como la integración con servicios externos y las reglas de validación implementadas.
+
+Las pruebas demostraron que la aplicación gestiona adecuadamente el ciclo de vida de los reportes ciudadanos, realiza la geocodificación automática de direcciones, se comunica exitosamente con la API de Groq para generar análisis inteligentes y almacena correctamente los resultados obtenidos en la base de datos.
+
+Asimismo, se comprobó que las validaciones implementadas mediante ASP.NET Core impiden el registro de información inválida y que la API responde con códigos HTTP apropiados ante diferentes escenarios de uso.
+
+En conjunto, las evidencias recopiladas permiten concluir que la solución desarrollada cumple los objetivos funcionales definidos para el proyecto, presenta un comportamiento estable durante las pruebas realizadas y constituye una base sólida para futuras mejoras.
+
+Entre las posibles mejoras futuras se contempla la incorporación de mecanismos de autenticación, notificaciones, paneles estadísticos y aplicaciones cliente para dispositivos móviles y web. :contentReference[oaicite:5]{index=5}
+
+---
