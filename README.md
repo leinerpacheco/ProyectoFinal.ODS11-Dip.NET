@@ -1,6 +1,6 @@
 <div align="center">
 
-# Sistema Inteligente de Reportes Ciudadanos con IA
+# Sistema Inteligente De Reportes Ciudadanos Con IA
 
 ## Proyecto Final del Diplomado en Desarrollo .NET
 
