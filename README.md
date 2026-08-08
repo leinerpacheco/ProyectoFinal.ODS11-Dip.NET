@@ -667,7 +667,7 @@ El siguiente diagrama representa la interacción entre los principales component
        ┌─────────────────────┐             ┌────────────────────────┐
        │      Groq API       │             │ API de Geocodificación │
        │ Inteligencia        │             │ Información geográfica │
-       │ Artificial           │             │                        │
+       │ Artificial          │             │                        │
        └─────────────────────┘             └────────────────────────┘
                   │                                   │
                   └──────────────┬────────────────────┘
