@@ -1016,3 +1016,169 @@ La relación establece que cada análisis de Inteligencia Artificial está asoci
 - El análisis generado por la IA se almacenará de forma independiente para facilitar futuras consultas y auditorías.
 
 ---
+
+# 14. DTOs
+
+## 14.1 Objetivo
+
+Definir los objetos de transferencia de datos utilizados por la API para recibir y devolver información, desacoplando las entidades del modelo de dominio de las solicitudes y respuestas HTTP.
+
+## 14.2 DTOs del Proyecto
+
+| DTO | Propósito |
+|---|---|
+| `CrearReporteDto` | Recibe la información necesaria para registrar un nuevo reporte. |
+| `ActualizarReporteDto` | Permite modificar la información de un reporte existente. |
+| `ReporteDto` | Devuelve la información completa de un reporte. |
+| `AnalisisIADto` | Representa el resultado del análisis generado por la IA. |
+
+## 14.3 CrearReporteDto
+
+| Campo | Tipo | Obligatorio |
+|---|---|---|
+| `Titulo` | `string` | Sí |
+| `Descripción` | `string` | Sí |
+| `Dirección` | `string` | Sí |
+
+El DTO `CrearReporteDto` contiene los datos necesarios para registrar un nuevo reporte ciudadano.
+
+---
+
+## 14.4 ActualizarReporteDto
+
+| Campo | Tipo | Obligatorio |
+|---|---|---|
+| `Titulo` | `string` | No |
+| `Descripcion` | `string` | No |
+| `Direccion` | `string` | No |
+| `Estado` | `EstadoReporte` (`enum`) | No |
+
+El DTO `ActualizarReporteDto` permite modificar la información de un reporte existente mediante los campos permitidos para actualización.
+
+---
+
+## 14.5 ReporteDto
+
+| Campo | Tipo |
+|---|---|
+| `Id` | `int` |
+| `Titulo` | `string` |
+| `Descripción` | `string` |
+| `Dirección` | `string` |
+| `Latitud` | `decimal?` |
+| `Longitud` | `decimal?` |
+| `Estado` | `EstadoReporte` |
+| `FechaRegistro` | `DateTime` |
+| `Analisis` | `AnalisisIADto` |
+
+El `ReporteDto` representa la información que la API devuelve al cliente al consultar un reporte.
+
+---
+
+## 14.6 AnalisisIADto
+
+| Campo | Tipo |
+|---|---|
+| `Categoria` | `string` |
+| `Prioridad` | `Prioridad` (`enum`) |
+| `Resumen` | `string` |
+| `Recomendación` | `string` |
+| `FechaAnalisis` | `DateTime` |
+
+El `AnalisisIADto` representa la información generada por el servicio de Inteligencia Artificial como resultado del análisis de un reporte.
+
+---
+
+## 14.7 Beneficios del Uso de DTOs
+
+El uso de DTOs proporciona los siguientes beneficios:
+
+- Protegen las entidades del dominio.
+- Permiten validar la información antes del procesamiento.
+- Reducen los datos enviados en cada respuesta.
+- Facilitan el mantenimiento y la evolución de la API.
+- Mejoran la seguridad al exponer únicamente la información necesaria.
+
+---
+
+# 15. Reglas de Validación
+
+## 15.1 Objetivo
+
+Definir las reglas de validación que deberán cumplir los datos recibidos por la API antes de ser procesados y almacenados.
+
+---
+
+## 15.2 Validaciones para CrearReporteDto
+
+| Campo | Regla | Mensaje de validación |
+|---|---|---|
+| `Titulo` | Obligatorio | El título es obligatorio. |
+| `Titulo` | Máximo 100 caracteres | El título no puede superar los 100 caracteres. |
+| `Descripcion` | Obligatorio | La descripción es obligatoria. |
+| `Descripcion` | Entre 20 y 1000 caracteres | La descripción debe tener entre 20 y 1000 caracteres. |
+| `Direccion` | Obligatoria | La dirección es obligatoria. |
+| `Direccion` | Máximo 100 caracteres | La dirección no puede superar los 200 caracteres. |
+
+> **Nota:** La documentación de Fase 2 presenta una inconsistencia en esta última regla: la columna `Regla` indica "Máximo 100 caracteres", mientras que el mensaje indica "no puede superar los 200 caracteres". Se conserva el contenido documentado para mantener fidelidad con la fuente.
+
+---
+
+## 15.3 Validaciones para ActualizarReporteDto
+
+| Campo | Regla | Mensaje de validación |
+|---|---|---|
+| `Estado` | Debe pertenecer al enum `EstadoReporte` | El estado especificado no es válido. |
+| `Titulo` | Máximo 100 caracteres | El título no puede superar los 100 caracteres. |
+| `Descripción` | Máximo 1000 caracteres | La descripción no puede superar los 1000 caracteres. |
+| `Dirección` | Máximo 100 caracteres | La dirección no puede superar los 100 caracteres. |
+
+---
+
+## 15.4 Validaciones de Negocio
+
+Además de las validaciones de los datos de entrada, el sistema contempla reglas relacionadas con la lógica de negocio.
+
+| Código | Regla |
+|---|---|
+| `VN-01` | No se podrá actualizar un reporte inexistente. |
+| `VN-02` | No se podrá eliminar un reporte inexistente. |
+| `VN-03` | Todo análisis de IA deberá asociarse a un reporte existente. |
+| `VN-04` | El sistema solo analizará reportes que hayan sido registrados correctamente. |
+| `VN-05` | Si la geocodificación falla, el reporte continuará con la dirección proporcionada por el ciudadano. |
+
+---
+
+## 15.5 Resultado Esperado
+
+Cuando una validación no se cumpla, la API rechazará la solicitud y devolverá un código HTTP `400 (Bad Request)` junto con el detalle de los errores encontrados.
+
+Cuando las reglas de negocio no puedan cumplirse, la API responderá con el código HTTP correspondiente (`404`, `409`, `500`, entre otros), según el escenario presentado.
+
+### Resumen del comportamiento
+
+```text
+Solicitud del cliente
+        │
+        ▼
+Validación de datos
+        │
+        ├──────────────► Datos inválidos
+        │                       │
+        │                       ▼
+        │                HTTP 400
+        │
+        ▼
+Validación de reglas
+de negocio
+        │
+        ├──────────────► Regla no cumplida
+        │                       │
+        │                       ▼
+        │              HTTP correspondiente
+        │
+        ▼
+Procesamiento de la solicitud
+```
+
+---
