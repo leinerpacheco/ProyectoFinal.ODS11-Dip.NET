@@ -1427,3 +1427,673 @@ Contenedor de Dependencias
 ```
 
 ---
+
+# 17. Integración con APIs Externas
+
+## 17.1 Objetivo
+
+Definir la comunicación entre el backend y los servicios externos utilizados por la aplicación, especificando el propósito de cada integración y el flujo general de intercambio de información.
+
+---
+
+## 17.2 APIs Integradas
+
+| API | Propósito | Método de Integración |
+|---|---|---|
+| Groq API | Analizar el contenido de los reportes mediante Inteligencia Artificial. | `HttpClient + REST + JSON` |
+| API de Geocodificación | Validar y complementar la ubicación del reporte. | `HttpClient + REST + JSON` |
+
+---
+
+## 17.3 Integración con Groq
+
+La API de Groq se utiliza para realizar el análisis inteligente de los reportes ciudadanos.
+
+### Información enviada
+
+| Campo |
+|---|
+| `Título` |
+| `Descripción` |
+
+### Información recibida
+
+| Campo |
+|---|
+| `Categoría` |
+| `Prioridad` |
+| `Resumen` |
+| `Recomendación` |
+
+El intercambio de información se realiza mediante solicitudes HTTP y datos estructurados en formato JSON.
+
+### Flujo de comunicación
+
+```text
+Reporte ciudadano
+       │
+       ▼
+GroqService
+       │
+       │ HTTP + JSON
+       ▼
+Groq API
+       │
+       │ Resultado del análisis
+       ▼
+GroqService
+       │
+       ▼
+Categoría
+Prioridad
+Resumen
+Recomendación
+```
+
+---
+
+## 17.4 Integración con la API de Geocodificación
+
+La API de geocodificación permite complementar la información relacionada con la ubicación del reporte ciudadano.
+
+### Información enviada
+
+| Campo |
+|---|
+| `Dirección del reporte` |
+
+### Información recibida
+
+| Campo |
+|---|
+| `Dirección validada` |
+| `Latitud` |
+| `Longitud` |
+
+La información obtenida puede utilizarse para complementar los datos geográficos asociados al reporte.
+
+### Flujo de comunicación
+
+```text
+Dirección del reporte
+       │
+       ▼
+GeocodingService
+       │
+       │ HTTP + JSON
+       ▼
+API de Geocodificación
+       │
+       │ Resultado
+       ▼
+GeocodingService
+       │
+       ▼
+Dirección validada
+Latitud
+Longitud
+```
+
+---
+
+## 17.5 Flujo de Integración
+
+El flujo general de integración de los servicios externos se organiza de la siguiente manera:
+
+```text
+Cliente
+   │
+   ▼
+ReporteController
+   │
+   ▼
+ReporteService
+   │
+   ├──────────────► GroqService
+   │                    │
+   │                    ▼
+   │                 Groq API
+   │                    │
+   │                    ▼
+   │              Resultado IA
+   │
+   └──────────────► GeocodingService
+                        │
+                        ▼
+                API de Geocodificación
+                        │
+                        ▼
+                 Datos geográficos
+   │
+   ▼
+Base de Datos
+```
+
+---
+
+## 17.6 Manejo de Respuestas
+
+| Escenario | Acción del Sistema |
+|---|---|
+| Respuesta exitosa | Procesa y almacena la información recibida. |
+| Error de comunicación | Registra el evento y devuelve un mensaje controlado. |
+| Timeout | Cancela la operación y responde con el código HTTP correspondiente. |
+| Respuesta inválida | Descarta la respuesta y registra el incidente. |
+
+El manejo de las respuestas busca evitar que los errores producidos por servicios externos afecten de forma no controlada al funcionamiento general de la API.
+
+---
+
+## 17.7 Consideraciones Técnicas
+
+- Las integraciones utilizarán `HttpClient` mediante inyección de dependencias.
+- Todas las solicitudes y respuestas se intercambiarán en formato JSON.
+- Las claves de acceso y configuraciones se almacenarán en `appsettings.json`.
+- Los servicios externos permanecerán desacoplados de la lógica de negocio mediante servicios especializados.
+- La integración con Groq será gestionada mediante `GroqService`.
+- La integración de geocodificación será gestionada mediante `GeocodingService`.
+
+---
+
+# 18. Documentación de Endpoints REST
+
+La API REST expone diferentes endpoints para gestionar los reportes ciudadanos, consultar información, actualizar registros, eliminar reportes, ejecutar análisis mediante Inteligencia Artificial y aplicar filtros.
+
+---
+
+## Endpoint 1. Crear Reporte Ciudadano
+
+### Objetivo
+
+Registrar un nuevo reporte ciudadano y almacenar la información inicial del incidente.
+
+### Especificación
+
+| Elemento | Valor |
+|---|---|
+| Método HTTP | `POST` |
+| Ruta | `/api/reportes` |
+| Autenticación | No requerida |
+| Tipo de contenido | `application/json` |
+
+### Request
+
+```json
+{
+  "titulo": "Bache en vía principal",
+  "descripción": "Se observa un bache de gran tamaño que dificulta la circulación de vehículos.",
+  "dirección": "Calle 10 #25-30"
+}
+```
+
+### Respuesta Exitosa
+
+**Código HTTP: `201 Created`**
+
+```json
+{
+  "id": 1,
+  "mensaje": "Reporte registrado correctamente."
+}
+```
+
+### Posibles Respuestas
+
+| Código HTTP | Descripción |
+|---|---|
+| `201` | Reporte creado correctamente. |
+| `400` | Datos de entrada inválidos. |
+| `500` | Error interno del servidor. |
+
+### Observaciones
+
+- El análisis mediante IA podrá ejecutarse inmediatamente después del registro del reporte o mediante un proceso posterior, según la implementación definida para el proyecto.
+- La información recibida será validada antes de almacenarse en la base de datos.
+
+---
+
+## Endpoint 2. Consultar Todos los Reportes
+
+### Objetivo
+
+Obtener el listado de todos los reportes ciudadanos registrados en el sistema, incluyendo la información principal y el resultado del análisis de IA cuando esté disponible.
+
+### Especificación
+
+| Elemento | Valor |
+|---|---|
+| Método HTTP | `GET` |
+| Ruta | `/api/reportes` |
+| Autenticación | No requerida |
+| Parámetros | No aplica |
+| Respuesta | `application/json` |
+
+### Request
+
+No requiere cuerpo de solicitud.
+
+### Respuesta Exitosa
+
+**Código HTTP: `200 OK`**
+
+```json
+[
+  {
+    "id": 1,
+    "titulo": "Bache en vía principal",
+    "descripción": "Se observa un bache de gran tamaño.",
+    "dirección": "Calle 10 #25-30",
+    "estado": "Pendiente",
+    "fechaRegistro": "2026-08-03T09:30:00",
+    "análisis": {
+      "categoría": "Infraestructura vial",
+      "prioridad": "Alta"
+    }
+  }
+]
+```
+
+### Posibles Respuestas
+
+| Código HTTP | Descripción |
+|---|---|
+| `200` | Consulta realizada correctamente. |
+| `404` | No existen reportes registrados. |
+| `500` | Error interno del servidor. |
+
+### Observaciones
+
+- La respuesta podrá incluir el resultado del análisis de IA cuando este haya sido generado.
+- Si no existen registros, la implementación podrá devolver una colección vacía o un código `404`, según la política definida para la API.
+
+---
+
+## Endpoint 3. Consultar Reporte por Identificador
+
+### Objetivo
+
+Obtener la información detallada de un reporte ciudadano específico mediante su identificador único.
+
+### Especificación
+
+| Elemento | Valor |
+|---|---|
+| Método HTTP | `GET` |
+| Ruta | `/api/reportes/{id}` |
+| Autenticación | No requerida |
+| Parámetro | `Id` |
+| Tipo | Entero positivo |
+| Respuesta | `application/json` |
+
+### Parámetro de Ruta
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `id` | `int` | Identificador único del reporte. |
+
+### Request
+
+```http
+GET /api/reportes/1
+```
+
+### Respuesta Exitosa
+
+**Código HTTP: `200 OK`**
+
+```json
+{
+  "id": 1,
+  "titulo": "Bache en vía principal",
+  "descripción": "Se observa un bache de gran tamaño.",
+  "dirección": "Calle 10 #25-30",
+  "estado": "Pendiente"
+}
+```
+
+### Posibles Respuestas
+
+| Código HTTP | Descripción |
+|---|---|
+| `200` | Reporte encontrado correctamente. |
+| `400` | Identificador con formato inválido. |
+| `404` | No existe un reporte con el identificador especificado. |
+| `500` | Error interno del servidor. |
+
+---
+
+## Endpoint 4. Actualizar Reporte
+
+### Objetivo
+
+Modificar la información de un reporte ciudadano existente.
+
+### Especificación
+
+| Elemento | Valor |
+|---|---|
+| Método HTTP | `PUT` |
+| Ruta | `/api/reportes/{id}` |
+| Autenticación | No requerida |
+| Parámetro | `Id` |
+| Respuesta | `application/json` |
+
+### Request
+
+```http
+PUT /api/reportes/1
+```
+
+### Ejemplo de cuerpo
+
+```json
+{
+  "titulo": "Bache en vía principal actualizado",
+  "descripcion": "El bache continúa afectando la circulación.",
+  "direccion": "Calle 10 #25-30",
+  "estado": "En proceso"
+}
+```
+
+### Posibles Respuestas
+
+| Código HTTP | Descripción |
+|---|---|
+| `200` | Reporte actualizado correctamente. |
+| `400` | Datos de entrada inválidos. |
+| `404` | No existe el reporte especificado. |
+| `500` | Error interno del servidor. |
+
+### Restricciones
+
+- El reporte debe existir antes de realizar la actualización.
+- Los datos enviados deben cumplir las reglas de validación.
+- El estado proporcionado debe pertenecer a los valores permitidos por el sistema.
+
+---
+
+## Endpoint 5. Eliminar Reporte
+
+### Objetivo
+
+Eliminar un reporte ciudadano existente.
+
+### Especificación
+
+| Elemento | Valor |
+|---|---|
+| Método HTTP | `DELETE` |
+| Ruta | `/api/reportes/{id}` |
+| Autenticación | No requerida |
+| Parámetro | `Id` |
+| Respuesta | `application/json` |
+
+### Request
+
+```http
+DELETE /api/reportes/1
+```
+
+### Posibles Respuestas
+
+| Código HTTP | Descripción |
+|---|---|
+| `204` | Reporte eliminado correctamente. |
+| `400` | Identificador con formato inválido. |
+| `404` | No existe un reporte con el identificador especificado. |
+| `500` | Error interno del servidor. |
+
+### Restricciones
+
+| Regla | Descripción |
+|---|---|
+| `RE-01` | Solo podrá eliminarse un reporte existente. |
+| `RE-02` | Al eliminar un reporte también deberá eliminarse su análisis de IA asociado, manteniendo la integridad de los datos. |
+| `RE-03` | La operación será permanente y no dispondrá de recuperación en la versión actual del sistema. |
+
+### Observaciones
+
+- Antes de realizar la eliminación, el sistema verificará la existencia del reporte.
+- La eliminación deberá mantener la consistencia entre el reporte y la información relacionada en la base de datos.
+- La respuesta confirmará el resultado de la operación mediante un mensaje descriptivo.
+
+---
+
+## Endpoint 6. Analizar Reporte con Inteligencia Artificial
+
+### Objetivo
+
+Ejecutar el análisis inteligente de un reporte ciudadano utilizando la API de Groq y almacenar el resultado obtenido.
+
+### Especificación
+
+| Elemento | Valor |
+|---|---|
+| Método HTTP | `POST` |
+| Ruta | `/api/reportes/{id}/analizar` |
+| Autenticación | No requerida |
+| Parámetro | `Id` |
+| Tipo | Entero positivo |
+| Respuesta | `application/json` |
+
+### Parámetro de Ruta
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `id` | `int` | Identificador único del reporte a analizar. |
+
+### Request
+
+```http
+POST /api/reportes/1/analizar
+```
+
+No requiere cuerpo de solicitud.
+
+### Respuesta Exitosa
+
+**Código HTTP: `200 OK`**
+
+```json
+{
+  "reporteId": 1,
+  "categoria": "Infraestructura vial",
+  "prioridad": "Alta",
+  "resumen": "El reporte describe un bache que representa un riesgo para la movilidad.",
+  "recomendacion": "Programar una inspección técnica y priorizar la reparación de la vía."
+}
+```
+
+### Posibles Respuestas
+
+| Código HTTP | Descripción |
+|---|---|
+| `200` | Análisis realizado correctamente. |
+| `400` | Solicitud inválida. |
+| `404` | No existe un reporte con el identificador especificado. |
+| `502` | Error al comunicarse con la API de Groq. |
+| `500` | Error interno del servidor. |
+
+### Flujo de Procesamiento
+
+```text
+1. Verificar la existencia del reporte.
+        │
+        ▼
+2. Recuperar la información almacenada.
+        │
+        ▼
+3. Construir el prompt para Groq.
+        │
+        ▼
+4. Enviar la solicitud mediante HttpClient.
+        │
+        ▼
+5. Procesar la respuesta recibida.
+        │
+        ▼
+6. Almacenar el análisis en la base de datos.
+        │
+        ▼
+7. Devolver el resultado al cliente.
+```
+
+### Observaciones
+
+- El análisis utilizará la información más reciente del reporte.
+- Si el análisis ya existe, la implementación podrá actualizarlo o reemplazarlo según la lógica definida para el sistema.
+- Los errores de comunicación con Groq serán gestionados mediante respuestas controladas y no expondrán información sensible al cliente.
+
+---
+
+## Endpoint 7. Filtrar Reportes
+
+### Objetivo
+
+Consultar reportes ciudadanos aplicando uno o varios criterios de búsqueda, permitiendo obtener resultados específicos sin recuperar toda la información almacenada.
+
+### Especificación
+
+| Elemento | Valor |
+|---|---|
+| Método HTTP | `GET` |
+| Ruta | `/api/reportes/filtrar` |
+| Autenticación | No requerida |
+| Parámetros | Opcionales |
+| Respuesta | `application/json` |
+
+### Parámetros de Consulta
+
+| Parámetro | Tipo | Obligatorio | Descripción |
+|---|---|---|---|
+| `estado` | `string` | No | Filtra por estado del reporte. |
+| `categoría` | `string` | No | Filtra por categoría asignada por la IA. |
+| `prioridad` | `string` | No | Filtra por prioridad del análisis. |
+| `fechaDesde` | `DateTime` | No | Fecha inicial del rango de búsqueda. |
+| `fechaHasta` | `DateTime` | No | Fecha final del rango de búsqueda. |
+
+### Request
+
+```http
+GET /api/reportes/filtrar?estado=Pendiente&prioridad=Alta
+```
+
+### Respuesta Exitosa
+
+**Código HTTP: `200 OK`**
+
+```json
+[
+  {
+    "id": 3,
+    "titulo": "Falla en alumbrado público",
+    "estado": "Pendiente",
+    "categoria": "Alumbrado",
+    "prioridad": "Alta"
+  }
+]
+```
+
+### Posibles Respuestas
+
+| Código HTTP | Descripción |
+|---|---|
+| `200` | Consulta realizada correctamente. |
+| `400` | Uno o más parámetros tienen un formato inválido. |
+| `500` | Error interno del servidor. |
+
+### Reglas de Filtrado
+
+| Código | Regla |
+|---|---|
+| `RF-01` | Todos los parámetros son opcionales. |
+| `RF-02` | Se podrán combinar múltiples filtros en una misma consulta. |
+| `RF-03` | Si no se envían parámetros, se devolverán todos los reportes. |
+| `RF-04` | Si la búsqueda no produce resultados, se devolverá una colección vacía (`[]`) con código `200 OK`. |
+
+### Observaciones
+
+- Los filtros serán implementados mediante consultas LINQ sobre Entity Framework Core.
+- El endpoint permitirá ampliar los criterios de búsqueda en futuras versiones sin modificar su estructura principal.
+
+---
+
+# 19. Documentación de la API con Swagger (OpenAPI)
+
+## 19.1 Objetivo
+
+Documentar la API REST mediante Swagger (OpenAPI), proporcionando una interfaz interactiva para consultar, probar y validar todos los endpoints implementados.
+
+---
+
+## 19.2 Información Documentada
+
+La documentación generada en Swagger incluirá la siguiente información para cada endpoint:
+
+| Elemento | Descripción |
+|---|---|
+| Método HTTP | Tipo de operación (`GET`, `POST`, `PUT` o `DELETE`). |
+| Ruta | Dirección del endpoint. |
+| Descripción | Propósito de la operación. |
+| Parámetros | Datos requeridos por la solicitud. |
+| Request Body | Estructura JSON esperada, cuando aplique. |
+| Respuestas | Códigos HTTP y ejemplos de respuesta. |
+
+---
+
+## 19.3 Endpoints Documentados
+
+| Endpoint | Método |
+|---|---|
+| `/api/reportes` | `POST` |
+| `/api/reportes` | `GET` |
+| `/api/reportes/{id}` | `GET` |
+| `/api/reportes/{id}` | `PUT` |
+| `/api/reportes/{id}` | `DELETE` |
+| `/api/reportes/{id}/analizar` | `POST` |
+| `/api/reportes/filtrar` | `GET` |
+
+---
+
+## 19.4 Evidencias a Capturar
+
+Durante la implementación del proyecto se contemplaron las siguientes evidencias:
+
+| Evidencia | Estado documentado |
+|---|---|
+| Vista general de Swagger | Validado |
+| Endpoint POST funcionando | Validado |
+| Endpoint GET funcionando | Validado |
+| Endpoint PUT funcionando | Validado |
+| Endpoint DELETE funcionando | Validado |
+| Endpoint de análisis con IA funcionando | Pendiente |
+
+> **Nota:** Estos estados corresponden a lo documentado en la Fase 2. Posteriormente serán contrastados con las pruebas reales de la Fase 3 y podrán actualizarse cuando exista evidencia de validación.
+
+---
+
+## 19.5 Casos a Documentar en Swagger
+
+Para cada endpoint se registrarán, como mínimo:
+
+- Un caso de uso válido.
+- Un caso de uso inválido.
+- La respuesta HTTP correspondiente.
+- El cuerpo de la solicitud cuando aplique.
+- El cuerpo de la respuesta.
+
+---
+
+## 19.6 Configuración General
+
+La documentación será generada automáticamente mediante Swagger/OpenAPI integrado en ASP.NET Core 8, permitiendo la consulta y prueba de los endpoints desde una interfaz web.
+
+---
+
+## 19.7 Consideraciones
+
+- La documentación deberá mantenerse sincronizada con la implementación de la API.
+- Todos los ejemplos presentados en Swagger corresponderán a funcionalidades implementadas en el proyecto.
+- Las capturas incluidas en el informe final serán obtenidas directamente de la documentación generada por Swagger durante las pruebas del sistema.
+
+---
