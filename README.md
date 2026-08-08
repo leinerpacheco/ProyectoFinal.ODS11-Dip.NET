@@ -471,7 +471,7 @@ Análisis del reporte
        ▼
 Persistencia del resultado
 
-##8.6 Flujo General de Integración
+## 8.6 Flujo General de Integración
 
 El flujo general de integración describe el proceso mediante el cual los diferentes componentes y servicios externos participan en el procesamiento de un reporte ciudadano.
 
