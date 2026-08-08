@@ -487,7 +487,7 @@ El proceso general comprende las siguientes etapas:
 
 ### Flujo general
 
-```text
+text
 Ciudadano
     │
     ▼
@@ -513,7 +513,7 @@ Respuesta de la API
     │
     ▼
 Cliente
-```
+
 
 ---
 
