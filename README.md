@@ -471,6 +471,8 @@ Análisis del reporte
        ▼
 Persistencia del resultado
 
+---
+
 ```
 
 ## 8.6 Flujo General de Integración
