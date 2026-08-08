@@ -470,3 +470,46 @@ Análisis del reporte
        │
        ▼
 Persistencia del resultado
+
+## 8.6 Flujo General de Integración
+
+El flujo general de integración describe el proceso que sigue la información desde que el ciudadano registra un reporte hasta que la API devuelve la respuesta correspondiente.
+
+### Flujo del proceso
+
+1. El ciudadano registra un reporte.
+2. La API valida la información recibida.
+3. Se almacena el reporte en la base de datos.
+4. Se consulta la API de Groq para realizar el análisis inteligente.
+5. Se consulta la API de geocodificación cuando sea necesario.
+6. Se actualiza la información del reporte con los resultados obtenidos.
+7. La API devuelve la respuesta al cliente.
+
+### Representación del flujo
+
+```text
+Ciudadano
+    │
+    ▼
+Registro del reporte
+    │
+    ▼
+Validación de la información
+    │
+    ▼
+Almacenamiento en la base de datos
+    │
+    ▼
+Análisis mediante API de Groq
+    │
+    ▼
+Geocodificación cuando sea necesaria
+    │
+    ▼
+Actualización de la información
+    │
+    ▼
+Respuesta de la API
+    │
+    ▼
+Cliente
