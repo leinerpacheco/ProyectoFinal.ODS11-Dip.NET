@@ -10,7 +10,7 @@
 ---
 API REST desarrollada con **ASP.NET Core**, **Entity Framework Core**, **SQLite**, **Groq IA** y consumo de **APIs externas** mediante **HttpClient**.
 </div>
----
+
 ## Documentacion Y QA
 ---
 ## Tabla de contenido
