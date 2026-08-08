@@ -2222,3 +2222,123 @@ La segunda captura complementa la evidencia anterior y permite visualizar con ma
 ### Evidencia
 
 ![CP-004 - Consulta de reporte inexistente - Caso inválido](docs/evidencias/CP-004.jpg)
+
+---
+
+## 21.5 CP-005 — Actualizar un reporte existente — Caso válido
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-005` |
+| **Endpoint** | `PUT /api/reportes/{id}` |
+| **Tipo de prueba** | Funcional — Caso válido |
+| **Objetivo** | Verificar la actualización de un reporte existente. |
+| **Datos de entrada** | `id = 1` y JSON con nuevos valores para título, descripción, dirección y estado. |
+| **Resultado esperado** | La API actualiza correctamente el reporte y devuelve el recurso modificado con código HTTP `200 OK`. |
+| **Resultado obtenido** | El reporte fue actualizado correctamente. Los cambios se reflejaron en la respuesta de la API y se conservaron los demás datos del registro. |
+| **Estado** | **Aprobado** |
+
+### Evidencia
+
+La siguiente captura corresponde a la ejecución exitosa del endpoint `PUT /api/reportes/{id}` desde Swagger.
+
+![CP-005 - Actualización de reporte - Caso válido](docs/evidencias/CP-005.jpg)
+
+### Verificación de persistencia
+
+Posteriormente se ejecutó el endpoint `GET /api/reportes/1`, confirmando que los cambios realizados mediante la operación de actualización fueron almacenados correctamente en la base de datos y recuperados sin inconsistencias. :contentReference[oaicite:1]{index=1}
+
+### Resultado de la evidencia
+
+| Evidencia | Estado |
+|---|---|
+| Actualización del reporte mediante `PUT /api/reportes/{id}` | **Validado con evidencia** |
+
+---
+
+## 21.6 CP-006 — Actualizar un reporte inexistente — Caso inválido
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-006` |
+| **Endpoint** | `PUT /api/reportes/{id}` |
+| **Tipo de prueba** | Funcional — Caso inválido |
+| **Objetivo** | Verificar el comportamiento de la API al intentar actualizar un reporte inexistente. |
+| **Datos de entrada** | `id = 20` y un cuerpo JSON válido. |
+| **Resultado esperado** | La API responde con código HTTP `404 Not Found` sin modificar información en la base de datos. |
+| **Resultado obtenido** | La API devolvió correctamente el código `404 Not Found`, indicando que el recurso solicitado no existe. |
+| **Estado** | **Aprobado** |
+
+### Evidencia
+
+La siguiente captura corresponde a la ejecución del endpoint `PUT /api/reportes/{id}` utilizando un identificador inexistente (`20`).
+
+![CP-006 - Actualización de reporte inexistente - Caso inválido](docs/evidencias/CP-006.jpg)
+
+### Resultado de la evidencia
+
+| Evidencia | Estado |
+|---|---|
+| Manejo de actualización sobre un reporte inexistente | **Validado con evidencia** |
+
+---
+## 21.7 CP-007 — Eliminar un reporte existente — Caso válido
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-007` |
+| **Endpoint** | `DELETE /api/reportes/{id}` |
+| **Tipo de prueba** | Funcional — Caso válido |
+| **Objetivo** | Verificar la eliminación de un reporte existente. |
+| **Datos de entrada** | `id = 1` |
+| **Resultado esperado** | La API elimina correctamente el reporte y responde con código HTTP `204 No Content`. |
+| **Resultado obtenido** | El reporte fue eliminado correctamente y la API devolvió el código `204 No Content`, sin contenido en el cuerpo de la respuesta. |
+| **Estado** | **Aprobado** |
+
+### Evidencia
+
+La siguiente captura corresponde a la ejecución del endpoint `DELETE /api/reportes/{id}` desde Swagger.
+
+![CP-007 - Eliminación de reporte - Caso válido](docs/evidencias/CP-007.jpg)
+
+### Verificación de persistencia
+
+Posteriormente se ejecutó el endpoint `GET /api/reportes/1`, obteniéndose una respuesta HTTP `404 Not Found`. Esto confirmó que el reporte fue eliminado correctamente de la base de datos y ya no podía ser consultado. :contentReference[oaicite:3]{index=3}
+
+### Resultado de la evidencia
+
+| Evidencia | Estado |
+|---|---|
+| Eliminación del reporte mediante `DELETE /api/reportes/{id}` | **Validado con evidencia** |
+| Verificación posterior mediante `GET /api/reportes/1` | **Eliminación confirmada** |
+
+---
+
+## 21.8 CP-008 — Eliminar un reporte inexistente — Caso inválido
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-008` |
+| **Endpoint** | `DELETE /api/reportes/{id}` |
+| **Tipo de prueba** | Funcional — Caso inválido |
+| **Objetivo** | Verificar el comportamiento de la API al intentar eliminar un reporte inexistente. |
+| **Datos de entrada** | `id = 20` |
+| **Resultado esperado** | La API responde con código HTTP `404 Not Found` sin modificar la base de datos. |
+| **Resultado obtenido** | La API devolvió correctamente el código `404 Not Found`, indicando que el recurso solicitado no existe. |
+| **Estado** | **Aprobado** |
+
+### Evidencia
+
+La siguiente captura corresponde a la ejecución del endpoint `DELETE /api/reportes/{id}` utilizando un identificador inexistente (`20`).
+
+![CP-008 - Eliminación de reporte inexistente - Caso inválido](docs/evidencias/CP-008.jpg)
+
+### Resultado de la evidencia
+
+| Evidencia | Estado |
+|---|---|
+| Manejo de eliminación sobre un reporte inexistente | **Validado con evidencia** |
+
+---
+
+
