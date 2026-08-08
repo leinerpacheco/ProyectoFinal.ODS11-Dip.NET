@@ -2,9 +2,9 @@
 
 # Sistema Inteligente De Reportes Ciudadanos Con IA
 
-## Proyecto Final del Diplomado en Desarrollo .NET
+## Proyecto Final Del Diplomado En Desarrollo .NET
 
-### Objetivo de Desarrollo Sostenible (ODS 11)
+### Objetivo De Desarrollo Sostenible (ODS 11)
 
 #### Ciudades y Comunidades Sostenibles
 ---
