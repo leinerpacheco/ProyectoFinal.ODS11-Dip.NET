@@ -781,3 +781,238 @@ Cliente
 | Falla de servicio externo | El sistema responde de acuerdo con la estrategia de manejo de errores definida en la [Sección 8.7](#87-manejo-de-errores). |
 
 ---
+
+# 11. Estructura General del Proyecto
+
+## 11.1 Objetivo
+
+Definir la organización del proyecto para facilitar el desarrollo, el mantenimiento y la escalabilidad de la API.
+
+## 11.2 Estructura de Directorios
+
+La estructura del proyecto se organiza mediante diferentes carpetas, cada una destinada a una responsabilidad específica dentro de la aplicación.
+
+```text
+ReportesCiudadanos.Api/
+│
+├── Controllers/
+├── Services/
+├── Models/
+├── DTOs/
+├── Data/
+├── Interfaces/
+├── Configurations/
+├── Migrations/
+├── Helpers/
+├── Validators/
+├── Middlewares/
+│
+├── Program.cs
+├── appsettings.json
+└── README.md
+```
+
+> La estructura anterior representa en Markdown las carpetas y archivos principales documentados en la Fase 2. La captura visual original de la estructura del proyecto podrá incorporarse posteriormente como evidencia o referencia gráfica.
+
+## 11.3 Descripción de Carpetas
+
+| Carpeta | Propósito |
+|---|---|
+| `Controllers` | Contiene los endpoints de la API y recibe las solicitudes HTTP. |
+| `Services` | Implementa la lógica de negocio y coordina las operaciones del sistema. |
+| `Models` | Define las entidades que representan la información del dominio. |
+| `DTOs` | Contiene los modelos utilizados para recibir y devolver información entre la API y el cliente. |
+| `Data` | Contiene el `DbContext`, configuraciones y acceso a la base de datos. |
+| `Interfaces` | Define los contratos implementados por los servicios. |
+| `Configurations` | Contiene la configuración de servicios externos y opciones del sistema. |
+| `Migrations` | Contiene los archivos generados por Entity Framework Core para administrar el esquema de la base de datos. |
+| `Helpers` | Contiene funciones auxiliares reutilizables dentro del proyecto. |
+| `Validators` | Contiene las reglas de validación para los datos de entrada. |
+| `Middlewares` | Contiene componentes para el manejo global de excepciones y procesamiento de solicitudes. |
+
+## 11.4 Archivos Principales
+
+| Archivo | Función |
+|---|---|
+| `Program.cs` | Punto de entrada de la aplicación y configuración de servicios. |
+| `appsettings.json` | Contiene la configuración general, cadenas de conexión y parámetros de integración. |
+| `README.md` | Documentación principal del proyecto. |
+
+## 11.5 Organización por Capas
+
+| Capa | Responsabilidad |
+|---|---|
+| Presentación | Exposición de la API mediante controladores REST. |
+| Aplicación | Implementación de la lógica de negocio. |
+| Persistencia | Acceso a datos mediante Entity Framework Core. |
+| Integración | Comunicación con Groq y la API de geocodificación. |
+
+## 11.6 Convenciones del Proyecto
+
+| Elemento | Convención |
+|---|---|
+| Clases | `PascalCase` |
+| Métodos | `PascalCase` |
+| Propiedades | `PascalCase` |
+| Variables locales | `camelCase` |
+| Interfaces | Prefijo `I` |
+| DTOs | Sufijo `Dto` |
+| Controladores | Sufijo `Controller` |
+| Servicios | Sufijo `Service` |
+
+---
+
+# 12. Arquitectura del Backend
+
+## 12.1 Objetivo
+
+Definir la organización interna del backend y la responsabilidad de cada componente que conforma la API REST.
+
+## 12.2 Arquitectura por Capas
+
+| Capa | Responsabilidades |
+|---|---|
+| `Controllers` | Exponen los endpoints y gestionan las solicitudes HTTP. |
+| `Services` | Implementan la lógica de negocio y coordinan los procesos del sistema. |
+| `Data` | Gestiona el acceso a la base de datos mediante Entity Framework Core. |
+| `Models` | Representan las entidades persistentes del sistema. |
+| `DTOs` | Definen los modelos de entrada y salida utilizados por la API. |
+| `Integrations` | Gestionan la comunicación con Groq y la API de geocodificación. |
+
+## 12.3 Componentes Principales
+
+| Componente | Función |
+|---|---|
+| `ReporteController` | Gestiona las operaciones CRUD de los reportes ciudadanos. |
+| `ReporteService` | Implementa las reglas de negocio relacionadas con los reportes. |
+| `IReporteService` | Define el contrato del servicio de reportes. |
+| `ApplicationDbContext` | Administra la conexión y las entidades de la base de datos. |
+| `GroqService` | Gestiona la comunicación con la API de Inteligencia Artificial. |
+| `GeocodingService` | Gestiona la consulta de información geográfica. |
+
+## 12.4 Flujo Interno
+
+El procesamiento interno de una solicitud se organiza mediante la interacción entre los controladores, los servicios, la persistencia de datos y las integraciones externas.
+
+```text
+Cliente
+   │
+   ▼
+ReporteController
+   │
+   ▼
+IReporteService
+   │
+   ▼
+ReporteService
+   │
+   ├──────────────► ApplicationDbContext
+   │                      │
+   │                      ▼
+   │                   Base de Datos
+   │
+   ├──────────────► GroqService
+   │                      │
+   │                      ▼
+   │                   Groq API
+   │
+   └──────────────► GeocodingService
+                          │
+                          ▼
+                  API de Geocodificación
+```
+
+## 12.5 Principios de Implementación
+
+| Principio | Aplicación |
+|---|---|
+| Separación de responsabilidades | Cada componente realiza una única función. |
+| Inyección de dependencias | Los servicios serán registrados mediante el contenedor de ASP.NET Core. |
+| Reutilización | Los servicios podrán ser utilizados por diferentes controladores. |
+| Bajo acoplamiento | Los componentes se comunicarán mediante interfaces. |
+| Escalabilidad | La arquitectura permitirá incorporar nuevos módulos sin modificar la estructura existente. |
+
+## 12.6 Dependencias entre Componentes
+
+| Componente | Depende de |
+|---|---|
+| `ReporteController` | `IReporteService` |
+| `ReporteService` | `ApplicationDbContext`, `GroqService`, `GeocodingService` |
+| `GroqService` | `HttpClient` |
+| `GeocodingService` | `HttpClient` |
+| `ApplicationDbContext` | Entity Framework Core |
+
+## 12.7 Consideraciones Técnicas
+
+- Los controladores no implementarán lógica de negocio.
+- Toda la lógica estará centralizada en la capa de servicios.
+- Las integraciones externas serán independientes del controlador.
+- El acceso a la base de datos se realizará exclusivamente mediante Entity Framework Core.
+- La comunicación entre capas utilizará DTOs para desacoplar las entidades del modelo de dominio.
+
+---
+
+# 13. Modelo de Datos
+
+## 13.1 Objetivo
+
+Definir las entidades del sistema, sus atributos y las relaciones necesarias para el almacenamiento de la información.
+
+## 13.2 Entidades del Sistema
+
+| Entidad | Descripción |
+|---|---|
+| `Reporte` | Almacena la información principal del incidente reportado por el ciudadano. |
+| `AnalisisIA` | Contiene el resultado del análisis generado por la Inteligencia Artificial para un reporte. |
+
+## 13.3 Entidad: Reporte
+
+| Campo | Tipo | Restricción | Descripción |
+|---|---|---|---|
+| `Id` | `int` | Primary Key, Identity | Identificador único del reporte. |
+| `Titulo` | `string` | Requerido, Máx. 100 | Título del reporte. |
+| `Descripción` | `string` | Requerido, Máx. 1000 | Descripción detallada del incidente. |
+| `Dirección` | `string` | Requerido, Máx. 250 | Dirección proporcionada por el ciudadano. |
+| `Latitud` | `decimal?` | Opcional | Coordenada geográfica obtenida mediante geocodificación. |
+| `Longitud` | `decimal?` | Opcional | Coordenada geográfica obtenida mediante geocodificación. |
+| `Estado` | `string` | Requerido | Estado actual del reporte. |
+| `FechaRegistro` | `DateTime` | Requerido | Fecha y hora de creación del reporte. |
+
+## 13.4 Entidad: AnalisisIA
+
+| Campo | Tipo | Restricción | Descripción |
+|---|---|---|---|
+| `Id` | `int` | Primary Key, Identity | Identificador del análisis. |
+| `ReporteId` | `int` | Foreign Key | Relación con el reporte asociado. |
+| `Categoria` | `string` | Requerido | Categoría asignada por la IA. |
+| `Prioridad` | `string` | Requerido | Nivel de prioridad determinado por la IA. |
+| `Resumen` | `string` | Requerido | Resumen generado automáticamente. |
+| `Recomendación` | `string` | Requerido | Acción sugerida por la IA. |
+| `FechaAnalisis` | `DateTime` | Requerido | Fecha y hora del análisis. |
+
+## 13.5 Relaciones
+
+| Relación | Cardinalidad |
+|---|---|
+| `Reporte → AnalisisIA` | Uno a Uno (`1:1`) |
+
+La relación establece que cada análisis de Inteligencia Artificial está asociado a un único reporte.
+
+## 13.6 Reglas de Integridad
+
+| Regla | Descripción |
+|---|---|
+| `RI-01` | Todo análisis debe estar asociado a un único reporte. |
+| `RI-02` | No puede existir un análisis sin un reporte asociado. |
+| `RI-03` | El título, la descripción y la dirección son obligatorios. |
+| `RI-04` | Las coordenadas geográficas son opcionales. |
+| `RI-05` | La fecha de registro será generada por el sistema. |
+
+## 13.7 Consideraciones de Diseño
+
+- Las claves primarias serán autoincrementales.
+- Las relaciones serán administradas mediante Entity Framework Core.
+- Los datos geográficos podrán permanecer nulos cuando la geocodificación no esté disponible.
+- El análisis generado por la IA se almacenará de forma independiente para facilitar futuras consultas y auditorías.
+
+---
