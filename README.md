@@ -9,38 +9,12 @@
 #### Ciudades y Comunidades Sostenibles
 ---
 API REST desarrollada con **ASP.NET Core**, **Entity Framework Core**, **SQLite**, **Groq IA** y consumo de **APIs externas** mediante **HttpClient**.
+## Documentación Y QA
 </div>
 
-
-## Documentación Y QA
----
-## Tabla de contenido
-
-- [Descripción del proyecto](#descripción-del-proyecto)
-- [Objetivo](#objetivo)
-  - [Objetivo general](#objetivo-general)
-  - [Objetivos específicos](#objetivos-específicos)
-- [Contexto y ODS 11 – Ciudades y Comunidades Sostenibles](#contexto-y-ods-11--ciudades-y-comunidades-sostenibles)
-- [Alcance del proyecto](#alcance-del-proyecto)
-- [Características principales](#características-principales)
-- [Arquitectura de la solución](#arquitectura-de-la-solución)
-- [Tecnologías utilizadas](#tecnologías-utilizadas)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Configuración e instalación](#configuración-e-instalación)
-- [Funcionamiento de la API](#funcionamiento-de-la-api)
-- [Integración de servicios externos](#integración-de-servicios-externos)
-- [Documentación de endpoints](#documentación-de-endpoints)
-- [Swagger / OpenAPI](#swagger--openapi)
-- [Validaciones y manejo de errores](#validaciones-y-manejo-de-errores)
-- [Pruebas y aseguramiento de calidad (QA)](#pruebas-y-aseguramiento-de-calidad-qa)
-- [Resultados obtenidos](#resultados-obtenidos)
-- [Conclusiones](#conclusiones)
-- [Posibles mejoras futuras](#posibles-mejoras-futuras)
-- [Autores](#autores)
-
 ---
 
-# 1. Sistema Inteligente de Reportes Ciudadanos con IA
+#  Sistema Inteligente de Reportes Ciudadanos con IA
 
 API REST desarrollada con **ASP.NET Core 8** para la gestión de reportes ciudadanos relacionados con problemáticas urbanas, incorporando **Inteligencia Artificial mediante la API de Groq**, servicios externos de geocodificación y persistencia de información mediante una base de datos relacional.
 
@@ -48,9 +22,9 @@ El sistema está orientado al registro, consulta, actualización, eliminación y
 
 ---
 
-## 1.1 Descripción del proyecto
+## 1. Descripción del proyecto
 
-### 1.2 Información General del Proyecto
+### 1.1 Información General del Proyecto
 
 **Nombre del sistema:** Sistema Inteligente de Reportes Ciudadanos con IA
 
@@ -142,7 +116,7 @@ El proyecto contribuye al ODS 11 mediante una plataforma que centraliza los repo
 
 La integración de Inteligencia Artificial permite automatizar parte del proceso de clasificación y priorización de los reportes.
 
-### 3.2 Contribución tecnológica
+## 4. Contribución tecnológica
 
 #### Centralización de la información
 
@@ -167,11 +141,11 @@ El sistema proporciona mecanismos de búsqueda y filtrado para consultar los rep
 
 ---
 
-## 3.3 Alcance del proyecto
+## 5. Alcance del proyecto
 
 El proyecto comprende el desarrollo de una **API REST** capaz de gestionar integralmente el ciclo de vida de los reportes ciudadanos.
 
-### 4. Funcionalidades incluidas
+### 5.1 Funcionalidades incluidas
 
 #### Gestión de reportes
 
@@ -219,7 +193,7 @@ El proyecto contempla:
 - Manejo de errores.
 - Arquitectura modular basada en ASP.NET Core 8.
 
-### 4.1 Funcionalidades fuera del alcance
+### 5.2 Funcionalidades fuera del alcance
 
 La versión inicial no contempla:
 
@@ -234,7 +208,7 @@ Estas funcionalidades podrán considerarse como mejoras para futuras versiones.
 
 ---
 
-## 5. Características principales
+### 5.3 Características principales
 
 | Característica | Descripción |
 |---|---|
@@ -254,7 +228,7 @@ Estas funcionalidades podrán considerarse como mejoras para futuras versiones.
 
 ---
 
-### Público objetivo
+## 6. Público objetivo
 
 ### Ciudadanos
 
@@ -266,7 +240,7 @@ Organizaciones o dependencias encargadas del mantenimiento y gestión del espaci
 
 ---
 
-### Justificación del proyecto
+### 6.1 Justificación del proyecto
 
 El crecimiento constante de las ciudades incrementa la necesidad de contar con mecanismos tecnológicos que permitan registrar y administrar de manera organizada las problemáticas presentes en el entorno urbano.
 
@@ -286,7 +260,7 @@ Desde el punto de vista académico, el proyecto permite integrar conocimientos r
 
 ---
 
-## 6. Valor agregado del proyecto
+### 6.2 Valor agregado del proyecto
 
 El principal valor agregado consiste en la integración de Inteligencia Artificial para interpretar automáticamente la descripción proporcionada por el ciudadano, identificar la naturaleza del problema y asignar una prioridad.
 
@@ -340,7 +314,7 @@ Por esta razón, el análisis no se ejecuta automáticamente dentro de la operac
 
 ---
 
-## 7.3 Requerimientos No Funcionales
+### 7.3 Requerimientos No Funcionales
 
 Los requerimientos no funcionales establecen las características técnicas y de calidad que debe cumplir el sistema durante su implementación y operación.
 
@@ -378,7 +352,7 @@ Para la consolidación final de los requerimientos se utilizaron los siguientes 
 
 El Sistema Inteligente de Reportes Ciudadanos con IA se desarrolla utilizando tecnologías del ecosistema .NET y servicios externos destinados a construir una API REST modular, mantenible y preparada para integrar capacidades de Inteligencia Artificial.
 
-## 8.2  Stack tecnológico
+### 8.2  Stack tecnológico
 
 | Tecnología | Versión / Tipo | Función |
 |---|---|---|
@@ -396,7 +370,7 @@ El Sistema Inteligente de Reportes Ciudadanos con IA se desarrolla utilizando te
 
 ---
 
-## 8.3 Descripción de las tecnologías
+### 8.3 Descripción de las tecnologías
 
 ### .NET 8
 
