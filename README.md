@@ -7,11 +7,10 @@
 ### Objetivo de Desarrollo Sostenible (ODS 11)
 
 #### Ciudades y Comunidades Sostenibles
-
+---
 API REST desarrollada con **ASP.NET Core**, **Entity Framework Core**, **SQLite**, **Groq IA** y consumo de **APIs externas** mediante **HttpClient**.
 </div>
 
----
 
 ## Tabla de contenido
 
