@@ -513,3 +513,36 @@ Respuesta de la API
     │
     ▼
 Cliente
+
+Cliente
+   │
+   │ Solicitud HTTP
+   ▼
+Controlador
+   │
+   │ Validación
+   ▼
+Servicio
+   │
+   ├──────────────► Groq API
+   │                    │
+   │                    ▼
+   │               Análisis IA
+   │
+   ├──────────────► API de Geocodificación
+   │                    │
+   │                    ▼
+   │              Información geográfica
+   │
+   ▼
+Entity Framework Core
+   │
+   ▼
+SQLite
+   │
+   ▼
+Controlador
+   │
+   │ Respuesta JSON
+   ▼
+Cliente
