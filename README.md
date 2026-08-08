@@ -471,7 +471,7 @@ Análisis del reporte
        ▼
 Persistencia del resultado
 
----
+```
 
 ## 8.6 Flujo General de Integración
 
@@ -486,8 +486,6 @@ El proceso general comprende las siguientes etapas:
 5. Se consulta el servicio de geocodificación cuando corresponde.
 6. Se actualiza la información del reporte con los resultados obtenidos.
 7. La API devuelve la respuesta correspondiente al cliente.
-
----
 
 ### Flujo general
 
