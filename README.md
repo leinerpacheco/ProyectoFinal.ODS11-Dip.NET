@@ -470,7 +470,7 @@ Análisis del reporte
        │
        ▼
 Persistencia del resultado
-
+```
 ---
 
 ```
