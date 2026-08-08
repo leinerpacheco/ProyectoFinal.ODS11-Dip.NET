@@ -305,30 +305,38 @@ Se clasifican en:
 
 ---
 
-## Requerimientos Funcionales
+### Requerimientos Funcionales
 
-Los requerimientos funcionales describen las funcionalidades que debe implementar la API para satisfacer las necesidades de los usuarios y cumplir los objetivos definidos para el proyecto.
+Los requerimientos funcionales definidos inicialmente en la Fase 1 fueron contrastados con la implementación documentada en la Fase 2 y las pruebas funcionales ejecutadas en la Fase 3.
 
-| ID | Requerimiento funcional | Prioridad | Estado |
+| ID | Requerimiento | Prioridad | Estado final |
 |---|---|---|---|
-| FR-01 | El sistema deberá permitir registrar un nuevo reporte ciudadano proporcionando el título, la descripción y la dirección del incidente. | Alta | Planificado |
-| FR-02 | El sistema deberá permitir consultar todos los reportes ciudadanos registrados. | Alta | Planificado |
-| FR-03 | El sistema deberá permitir consultar un reporte específico mediante su identificador único. | Alta | Planificado |
-| FR-04 | El sistema deberá permitir actualizar la información de un reporte existente. | Alta | Planificado |
-| FR-05 | El sistema deberá permitir eliminar un reporte previamente registrado. | Alta | Planificado |
-| FR-06 | El sistema deberá analizar automáticamente cada reporte mediante la API de Groq una vez sea registrado. | Alta | Planificado |
-| FR-07 | El sistema deberá clasificar automáticamente el reporte dentro de una categoría de problemática urbana. | Alta | Planificado |
-| FR-08 | El sistema deberá asignar automáticamente un nivel de prioridad al reporte utilizando Inteligencia Artificial. | Alta | Planificado |
-| FR-09 | El sistema deberá generar un resumen automático del incidente reportado. | Media | Planificado |
-| FR-10 | El sistema deberá generar una recomendación para la atención del incidente utilizando Inteligencia Artificial. | Media | Planificado |
-| FR-11 | El sistema deberá almacenar el resultado del análisis realizado por la IA asociado al reporte correspondiente. | Alta | Planificado |
-| FR-12 | El sistema deberá consultar el análisis generado para un reporte determinado. | Media | Planificado |
-| FR-13 | El sistema deberá permitir consultar reportes filtrando por categoría. | Alta | Planificado |
-| FR-14 | El sistema deberá permitir consultar reportes filtrando por estado. | Alta | Planificado |
-| FR-15 | El sistema deberá permitir consultar reportes filtrando por prioridad. | Alta | Planificado |
-| FR-16 | El sistema deberá permitir consultar reportes mediante un rango de fechas. | Media | Planificado |
-| FR-17 | El sistema deberá consumir una API externa de geocodificación para complementar la información geográfica del reporte cuando corresponda. | Media | Planificado |
-| FR-18 | El sistema deberá responder las solicitudes mediante servicios REST utilizando formato JSON. | Alta | Planificado |
+| **FR-01** | Registrar un nuevo reporte ciudadano proporcionando título, descripción y dirección. | Alta | **Realizado** |
+| **FR-02** | Consultar todos los reportes ciudadanos registrados. | Alta | **Realizado** |
+| **FR-03** | Consultar un reporte específico mediante su identificador único. | Alta | **Realizado** |
+| **FR-04** | Actualizar la información de un reporte existente. | Alta | **Realizado** |
+| **FR-05** | Eliminar un reporte previamente registrado. | Alta | **Realizado** |
+| **FR-06** | Analizar automáticamente cada reporte mediante la API de Groq una vez sea registrado. | Alta | **Parcialmente realizado** |
+| **FR-07** | Clasificar automáticamente el reporte dentro de una categoría de problemática urbana. | Alta | **Realizado** |
+| **FR-08** | Asignar automáticamente un nivel de prioridad al reporte utilizando Inteligencia Artificial. | Alta | **Realizado** |
+| **FR-09** | Generar un resumen automático del incidente reportado. | Media | **Realizado** |
+| **FR-10** | Generar una recomendación para la atención del incidente utilizando Inteligencia Artificial. | Media | **Realizado** |
+| **FR-11** | Almacenar el resultado del análisis realizado por la IA asociado al reporte correspondiente. | Alta | **Realizado** |
+| **FR-12** | Consultar el análisis generado para un reporte determinado. | Media | **Realizado** |
+| **FR-13** | Consultar reportes filtrando por categoría. | Alta | **Realizado** |
+| **FR-14** | Consultar reportes filtrando por estado. | Alta | **Realizado** |
+| **FR-15** | Consultar reportes filtrando por prioridad. | Alta | **Realizado** |
+| **FR-16** | Consultar reportes mediante un rango de fechas. | Media | **Realizado** |
+| **FR-17** | Consumir una API externa de geocodificación para complementar la información geográfica del reporte. | Media | **Realizado** |
+| **FR-18** | Responder las solicitudes mediante servicios REST utilizando formato JSON. | Alta | **Realizado** |
+
+#### Observación sobre FR-06
+
+El análisis mediante Inteligencia Artificial se encuentra implementado y funcional; sin embargo, en la versión probada el análisis se ejecuta mediante el endpoint específico:
+
+`POST /api/reportes/{id}/analizar`
+
+Por esta razón, el análisis no se ejecuta automáticamente dentro de la operación de registro del reporte, tal como se planteó originalmente en FR-06. La funcionalidad de análisis, clasificación, prioridad, resumen, recomendación y persistencia sí fue implementada y validada mediante los casos `CP-009` y `CP-010`.
 
 ---
 
