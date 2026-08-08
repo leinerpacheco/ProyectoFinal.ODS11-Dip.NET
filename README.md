@@ -473,19 +473,19 @@ Persistencia del resultado
 
 ## 8.6 Flujo General de Integración
 
-El flujo general de integración describe el proceso que sigue la información desde que el ciudadano registra un reporte hasta que la API devuelve la respuesta correspondiente.
+El flujo general de integración describe el proceso mediante el cual los diferentes componentes y servicios externos participan en el procesamiento de un reporte ciudadano.
 
-### Flujo del proceso
+El proceso general comprende las siguientes etapas:
 
 1. El ciudadano registra un reporte.
-2. La API valida la información recibida.
-3. Se almacena el reporte en la base de datos.
-4. Se consulta la API de Groq para realizar el análisis inteligente.
-5. Se consulta la API de geocodificación cuando sea necesario.
+2. La API recibe y valida la información.
+3. El reporte es almacenado en la base de datos.
+4. Se realiza el análisis inteligente mediante la API de Groq.
+5. Se consulta el servicio de geocodificación cuando corresponde.
 6. Se actualiza la información del reporte con los resultados obtenidos.
-7. La API devuelve la respuesta al cliente.
+7. La API devuelve la respuesta correspondiente al cliente.
 
-### Representación del flujo
+### Flujo general
 
 ```text
 Ciudadano
@@ -513,26 +513,98 @@ Respuesta de la API
     │
     ▼
 Cliente
+```
 
+---
+
+## 8.7 Manejo de Errores
+
+El sistema contempla diferentes escenarios de error que pueden producirse durante el procesamiento de los reportes y durante la comunicación con los servicios externos.
+
+La estrategia de manejo de errores busca mantener la integridad de la información y proporcionar respuestas HTTP adecuadas al consumidor de la API.
+
+| Escenario | Código HTTP | Respuesta esperada | Acción del sistema |
+|---|---|---|---|
+| Groq API no responde | `503 Service Unavailable` | No fue posible realizar el análisis inteligente en este momento. | El reporte se registra correctamente y queda marcado como análisis pendiente para un procesamiento posterior. |
+| API de geocodificación no disponible | `200 OK` | El reporte se registra utilizando la dirección proporcionada por el ciudadano. | Se omite la geocodificación y se registra el evento en el log. |
+| Tiempo de espera agotado (Timeout) | `504 Gateway Timeout` | El servicio externo tardó demasiado en responder. | Se cancela la solicitud al servicio externo y se registra el evento. |
+| Respuesta inválida del servicio externo | `502 Bad Gateway` | El servicio externo devolvió una respuesta no válida. | Se descarta la respuesta y se mantiene la integridad de la información almacenada. |
+| Error de conexión con la base de datos | `500 Internal Server Error` | Ocurrió un error al almacenar la información. | No se registra el reporte y se genera un registro de error para diagnóstico. |
+| Datos obligatorios incompletos | `400 Bad Request` | Se informa al cliente cuáles campos son inválidos o faltantes. | La solicitud es rechazada antes de iniciar el procesamiento. |
+| Reporte no encontrado | `404 Not Found` | No existe un reporte con el identificador especificado. | La operación solicitada no se ejecuta. |
+| Error interno no controlado | `500 Internal Server Error` | Ha ocurrido un error inesperado. | Se devuelve un mensaje genérico y se registra el detalle técnico en el log. |
+
+---
+
+# 9. Arquitectura General del Sistema
+
+## 9.1 Descripción General
+
+El sistema se implementará bajo una arquitectura en capas, donde cada componente tendrá una responsabilidad específica.
+
+Esta organización favorece:
+
+- La mantenibilidad.
+- La escalabilidad.
+- La integración con servicios externos.
+- La separación de responsabilidades.
+
+La arquitectura permite organizar los diferentes componentes de la solución y facilita la evolución del sistema.
+
+---
+
+## 9.2 Componentes de la Arquitectura
+
+La arquitectura está compuesta por diferentes componentes encargados de recibir solicitudes, procesar la lógica de negocio, administrar la persistencia e integrar los servicios externos.
+
+| Componente | Responsabilidad |
+|---|---|
+| Cliente | Consume los endpoints de la API mediante Swagger, Postman o una aplicación cliente. |
+| Controllers | Reciben las solicitudes HTTP y las dirigen hacia la lógica correspondiente. |
+| Services | Implementan las reglas de negocio e integran los servicios externos. |
+| DTOs | Validan y transfieren información entre el cliente y la API. |
+| Entity Framework Core | Gestiona el acceso a la base de datos mediante el ORM. |
+| Base de datos SQLite | Almacena los reportes ciudadanos y los resultados del análisis. |
+| Groq API | Analiza los reportes mediante Inteligencia Artificial. |
+| API de Geocodificación | Complementa la información geográfica del reporte. |
+
+---
+
+## 9.3 Flujo General de la Arquitectura
+
+El flujo general de la arquitectura comprende las siguientes etapas:
+
+1. El cliente envía una solicitud HTTP.
+2. El controlador recibe la petición.
+3. Se validan los datos recibidos.
+4. El servicio procesa la lógica de negocio.
+5. Cuando corresponde, se consulta la API de Groq.
+6. Cuando corresponde, se consulta la API de geocodificación.
+7. Entity Framework Core almacena o consulta la información en SQLite.
+8. El controlador devuelve la respuesta al cliente en formato JSON.
+
+### Representación del flujo
+
+```text
 Cliente
    │
    │ Solicitud HTTP
    ▼
-Controlador
+Controllers
    │
    │ Validación
    ▼
-Servicio
+Services
    │
    ├──────────────► Groq API
    │                    │
    │                    ▼
-   │               Análisis IA
+   │              Análisis mediante IA
    │
    ├──────────────► API de Geocodificación
    │                    │
    │                    ▼
-   │              Información geográfica
+   │             Información geográfica
    │
    ▼
 Entity Framework Core
@@ -541,8 +613,171 @@ Entity Framework Core
 SQLite
    │
    ▼
-Controlador
+Controllers
    │
    │ Respuesta JSON
    ▼
 Cliente
+```
+
+---
+
+## 9.4 Principios de Diseño
+
+La arquitectura se basa en los siguientes principios:
+
+- **Separación de responsabilidades:** cada componente posee una responsabilidad específica.
+- **Modularidad:** los componentes se organizan en módulos independientes.
+- **Reutilización:** se favorece la reutilización de componentes y servicios.
+- **Escalabilidad:** la estructura permite incorporar nuevas funcionalidades.
+- **Bajo acoplamiento:** se reduce la dependencia directa entre los componentes.
+- **Alta cohesión:** las responsabilidades relacionadas se mantienen agrupadas.
+
+---
+
+## 9.5 Diagrama de Arquitectura
+
+El siguiente diagrama representa la interacción entre los principales componentes de la solución:
+
+```text
+                         ┌───────────────────────┐
+                         │        Cliente        │
+                         │ Swagger / Postman /   │
+                         │ Aplicación cliente    │
+                         └───────────┬───────────┘
+                                     │
+                                     │ HTTP / JSON
+                                     ▼
+                         ┌───────────────────────┐
+                         │      Controllers      │
+                         │       API REST        │
+                         └───────────┬───────────┘
+                                     │
+                                     ▼
+                         ┌───────────────────────┐
+                         │       Services        │
+                         │   Lógica de negocio   │
+                         └───────┬─────┬─────────┘
+                                 │     │
+                  ┌──────────────┘     └──────────────┐
+                  │                                   │
+                  ▼                                   ▼
+       ┌─────────────────────┐             ┌────────────────────────┐
+       │      Groq API       │             │ API de Geocodificación │
+       │ Inteligencia        │             │ Información geográfica │
+       │ Artificial           │             │                        │
+       └─────────────────────┘             └────────────────────────┘
+                  │                                   │
+                  └──────────────┬────────────────────┘
+                                 │
+                                 ▼
+                     ┌───────────────────────┐
+                     │ Entity Framework Core │
+                     │          ORM          │
+                     └───────────┬───────────┘
+                                 │
+                                 ▼
+                     ┌───────────────────────┐
+                     │     Base de Datos     │
+                     │        SQLite         │
+                     └───────────────────────┘
+```
+
+---
+
+## 9.6 Beneficios de la Arquitectura
+
+La arquitectura propuesta proporciona los siguientes beneficios:
+
+| Beneficio | Descripción |
+|---|---|
+| Mantenibilidad | Facilita la modificación y evolución del sistema. |
+| Escalabilidad | Permite incorporar nuevas funcionalidades sin modificar significativamente la estructura existente. |
+| Integración | Facilita el consumo de servicios externos. |
+| Reutilización | Favorece el uso de componentes comunes en diferentes funcionalidades. |
+| Organización | Define claramente la responsabilidad de cada componente. |
+
+---
+
+# 10. Flujo General de Funcionamiento del Sistema
+
+## 10.1 Descripción General
+
+El flujo general de funcionamiento describe el recorrido que sigue un reporte ciudadano desde su creación hasta la entrega de la respuesta al cliente.
+
+Durante este proceso intervienen la validación de los datos, la lógica de negocio, los servicios externos, la persistencia de información y la generación de la respuesta HTTP.
+
+---
+
+## 10.2 Flujo Principal
+
+El flujo principal del sistema está compuesto por las siguientes etapas:
+
+| Paso | Proceso | Componente responsable |
+|---:|---|---|
+| 1 | El cliente envía un nuevo reporte ciudadano. | Cliente |
+| 2 | La API recibe y valida la solicitud. | Controller + DTO |
+| 3 | Se ejecuta la lógica de negocio. | Service |
+| 4 | Se consulta la API de Groq para analizar el reporte. | Servicio de IA |
+| 5 | Se consulta la API de geocodificación cuando corresponde. | Servicio de geocodificación |
+| 6 | Se almacena la información en la base de datos. | Entity Framework Core |
+| 7 | Se genera la respuesta HTTP en formato JSON. | Controller |
+| 8 | El cliente recibe la respuesta del sistema. | Cliente |
+
+---
+
+## 10.3 Flujo Simplificado
+
+El funcionamiento general del sistema puede resumirse mediante el siguiente flujo:
+
+```text
+Cliente
+   │
+   ▼
+Nuevo reporte
+   │
+   ▼
+Validación
+   │
+   ▼
+Lógica de negocio
+   │
+   ├──────────────► Análisis mediante Groq
+   │
+   └──────────────► Geocodificación cuando corresponde
+   │
+   ▼
+Persistencia en base de datos
+   │
+   ▼
+Respuesta HTTP / JSON
+   │
+   ▼
+Cliente
+```
+
+---
+
+## 10.4 Entradas y Salidas
+
+| Entrada | Proceso | Salida |
+|---|---|---|
+| Datos del reporte | Validación | Solicitud válida o error de validación |
+| Reporte válido | Análisis mediante IA | Categoría, prioridad, resumen y recomendación |
+| Ubicación | Geocodificación | Información geográfica complementaria |
+| Información procesada | Persistencia | Reporte almacenado |
+| Consulta del cliente | Recuperación de información | Respuesta en formato JSON |
+
+---
+
+## 10.5 Escenarios de Resultado
+
+| Escenario | Resultado esperado |
+|---|---|
+| Flujo exitoso | Reporte registrado y respuesta HTTP `200` o `201`, según la operación realizada. |
+| Error de validación | Respuesta HTTP `400` con información sobre los datos inválidos. |
+| Reporte inexistente | Respuesta HTTP `404`. |
+| Error interno | Respuesta HTTP `500` con un mensaje controlado. |
+| Falla de servicio externo | El sistema responde de acuerdo con la estrategia de manejo de errores definida en la [Sección 8.7](#87-manejo-de-errores). |
+
+---
