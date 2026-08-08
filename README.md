@@ -2153,3 +2153,72 @@ La segunda captura complementa la evidencia anterior y permite visualizar con ma
 | Creación del reporte mediante `POST /api/reportes` | **Validado con evidencia** |
 
 ---
+
+## 21.2 CP-002 — Consulta del reporte creado
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-002` |
+| **Endpoint** | `GET /api/reportes` |
+| **Tipo de prueba** | Consulta de reportes |
+| **Objetivo** | Verificar la consulta de los reportes registrados. |
+| **Datos de entrada** | Sin parámetros de consulta. |
+| **Resultado esperado** | HTTP `200` y listado de reportes registrados. |
+| **Resultado obtenido** | HTTP `200`. Se recuperó correctamente el reporte registrado previamente mediante `CP-001`. |
+| **Estado** | **Aprobado** |
+
+### Evidencia 1
+
+La siguiente captura corresponde a la consulta de los reportes registrados mediante el endpoint `GET /api/reportes`.
+
+![CP-002 - Consulta de reportes](docs/evidencias/CP-002.jpg)
+
+### Evidencia 2
+
+La segunda captura complementa la evidencia anterior y permite visualizar con mayor detalle la solicitud y la respuesta obtenida en la consulta del reporte registrado.
+
+![CP-002 - Respuesta de consulta de reportes](docs/evidencias/CP-002-2.jpg)
+
+### Resultado de la evidencia
+
+| Evidencia | Estado |
+|---|---|
+| Consulta mediante `GET /api/reportes` | **Validado con evidencia** |
+
+---
+
+## 21.3 CP-003 — Consultar un reporte por ID — Caso válido
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-003` |
+| **Endpoint** | `GET /api/reportes/{id}` |
+| **Tipo de prueba** | Funcional — Caso válido |
+| **Datos de entrada** | `id = 1` |
+| **Objetivo** | Verificar la consulta de un reporte específico mediante su identificador. |
+| **Resultado esperado** | La API devuelve el reporte correspondiente con código HTTP `200 OK`. |
+| **Resultado obtenido** | Se obtuvo correctamente el reporte con identificador `1`. |
+| **Estado** | **Aprobado** |
+
+### Evidencia
+
+![CP-003 - Consulta de reporte por ID - Caso válido](docs/evidencias/CP-003.jpg)
+
+---
+
+## 21.4 CP-004 — Consultar un reporte por ID — Caso inválido
+
+| Campo | Valor |
+|---|---|
+| **Identificador** | `CP-004` |
+| **Endpoint** | `GET /api/reportes/{id}` |
+| **Tipo de prueba** | Funcional — Caso inválido |
+| **Datos de entrada** | `id = 20` |
+| **Objetivo** | Verificar el comportamiento del sistema cuando se consulta un identificador inexistente. |
+| **Resultado esperado** | La API responde con código HTTP `404 Not Found`. |
+| **Resultado obtenido** | La API devolvió correctamente el código `404 Not Found`, indicando que el recurso solicitado no existe. |
+| **Estado** | **Aprobado** |
+
+### Evidencia
+
+![CP-004 - Consulta de reporte inexistente - Caso inválido](docs/evidencias/CP-004.jpg)
