@@ -2122,132 +2122,34 @@ Se contemplaron:
 
 # 21. Evidencias QA
 
-## 21.1 CP-001 — Crear un reporte válido
+## 21.1 CP-001 — Creación de un reporte
 
 | Campo | Valor |
 |---|---|
 | **Identificador** | `CP-001` |
 | **Endpoint** | `POST /api/reportes` |
-| **Tipo de prueba** | Funcional |
+| **Tipo de prueba** | Creación de reporte |
 | **Objetivo** | Verificar el registro correcto de un reporte ciudadano. |
 | **Resultado esperado** | HTTP `201` y creación del reporte. |
 | **Resultado obtenido** | HTTP `201`. El reporte fue almacenado correctamente en SQLite y se generó el identificador `1`. |
 | **Estado** | **Aprobado** |
 
-### Evidencia
+### Evidencia 1
 
-**Imagen 1 — Creación exitosa de un reporte ciudadano mediante `POST /api/reportes`.**
+La siguiente captura corresponde a la ejecución del endpoint `POST /api/reportes` desde Swagger, donde se realizó la creación del reporte ciudadano.
 
-La ejecución desde Swagger permitió comprobar que la API registró correctamente el reporte, asignó el identificador `1`, normalizó la dirección mediante el servicio de geocodificación y almacenó las coordenadas geográficas correspondientes. :contentReference[oaicite:4]{index=4}
+![CP-001 - Creación del reporte](docs/evidencias/CP-001.jpg)
 
-> **Imagen pendiente de insertar:** `Imagen 1 - Crear un reporte valido`
+### Evidencia 2
 
-```markdown
-![CP-001 - Crear un reporte válido](ruta/a/Imagen1.png)
-```
+La segunda captura complementa la evidencia anterior y permite visualizar con mayor detalle la solicitud y la respuesta obtenida durante la creación del reporte.
 
-### Estado de la evidencia
+![CP-001 - Respuesta de creación del reporte](docs/evidencias/CP-001-2.jpg)
 
-| Evidencia | Estado |
-|---|---|
-| Endpoint `POST` funcionando | **Validado con evidencia** |
-
----
-
-## 21.2 CP-002 — Consultar reportes
-
-| Campo | Valor |
-|---|---|
-| **Identificador** | `CP-002` |
-| **Endpoint** | `GET /api/reportes` |
-| **Tipo de prueba** | Funcional |
-| **Datos de entrada** | Sin parámetros de consulta. |
-| **Objetivo** | Verificar la consulta de los reportes registrados. |
-| **Resultado esperado** | HTTP `200` y listado de reportes registrados. |
-| **Resultado obtenido** | HTTP `200`. Se recuperó correctamente el reporte registrado en la prueba CP-001 con toda su información asociada. |
-| **Estado** | **Aprobado** |
-
-### Evidencia
-
-**Imagen 2 — Consulta general de reportes mediante `GET /api/reportes`.**
-
-La ejecución desde Swagger permitió comprobar que la API devolvió correctamente el listado de reportes registrados, incluyendo la información general, la ubicación geográfica obtenida mediante la API de geocodificación y el estado inicial del reporte. :contentReference[oaicite:5]{index=5}
-
-> **Imagen pendiente de insertar:** `Imagen 2 - Consultar Reportes`
-
-```markdown
-![CP-002 - Consultar reportes](ruta/a/Imagen2.png)
-```
-
-### Estado de la evidencia
+### Resultado de la evidencia
 
 | Evidencia | Estado |
 |---|---|
-| Endpoint `GET` funcionando | **Validado con evidencia** |
-
----
-
-## 21.3 CP-003 — Consultar un reporte por ID — Caso válido
-
-| Campo | Valor |
-|---|---|
-| **Identificador** | `CP-003` |
-| **Endpoint** | `GET /api/reportes/{id}` |
-| **Tipo de prueba** | Funcional |
-| **Datos de entrada** | `id = 1` |
-| **Objetivo** | Verificar la consulta de un reporte específico mediante su identificador. |
-| **Resultado esperado** | La API devuelve el reporte correspondiente con código HTTP `200 OK`. |
-| **Resultado obtenido** | Se obtuvo el reporte con identificador `1`, incluyendo toda la información registrada y las coordenadas geográficas asociadas. |
-| **Estado** | **Aprobado** |
-
-### Evidencia
-
-**Imagen 3 — Consulta de un reporte existente mediante `GET /api/reportes/{id}`.**
-
-Se ejecutó el endpoint utilizando el identificador `1`. La API respondió con código `200 OK` y devolvió correctamente la información del reporte almacenado. :contentReference[oaicite:6]{index=6}
-
-> **Imagen pendiente de insertar:** `Imagen 3 - Caso Valido`
-
-```markdown
-![CP-003 - Consulta de reporte por ID](ruta/a/Imagen3.png)
-```
-
----
-
-## 21.4 CP-004 — Consultar un reporte por ID — Caso inválido
-
-| Campo | Valor |
-|---|---|
-| **Identificador** | `CP-004` |
-| **Endpoint** | `GET /api/reportes/{id}` |
-| **Tipo de prueba** | Funcional — Caso inválido |
-| **Datos de entrada** | `id = 20` |
-| **Objetivo** | Verificar el comportamiento del sistema cuando se consulta un identificador inexistente. |
-| **Resultado esperado** | La API responde con código HTTP `404 Not Found`. |
-| **Resultado obtenido** | La API devolvió correctamente el código `404 Not Found`, indicando que el recurso solicitado no existe. |
-| **Estado** | **Aprobado** |
-
-### Evidencia
-
-**Imagen 4 — Consulta de un reporte inexistente.**
-
-Se ejecutó el endpoint `GET /api/reportes/{id}` utilizando el identificador inexistente `20`. La API respondió con código HTTP `404 Not Found`, confirmando el manejo adecuado de solicitudes sobre recursos no registrados. :contentReference[oaicite:7]{index=7}
-
-> **Imagen pendiente de insertar:** `Imagen 4 - Caso Invalido`
-
-```markdown
-![CP-004 - Consulta de reporte inexistente](ruta/a/Imagen4.png)
-```
-
----
-
-### Resumen parcial de evidencias
-
-| Caso | Endpoint | Tipo | Resultado | Estado |
-|---|---|---|---|---|
-| `CP-001` | `POST /api/reportes` | Creación | HTTP `201` | **Aprobado** |
-| `CP-002` | `GET /api/reportes` | Consulta general | HTTP `200` | **Aprobado** |
-| `CP-003` | `GET /api/reportes/{id}` | Caso válido | HTTP `200` | **Aprobado** |
-| `CP-004` | `GET /api/reportes/{id}` | Caso inválido | HTTP `404` | **Aprobado** |
+| Creación del reporte mediante `POST /api/reportes` | **Validado con evidencia** |
 
 ---
