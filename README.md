@@ -8,7 +8,7 @@
 
 #### Ciudades y Comunidades Sostenibles
 ---
-API REST desarrollada con **ASP.NET Core**, **Entity Framework Core**, **SQLite**, **Groq IA** y consumo de **APIs externas** mediante **HttpClient**.
+#### API REST desarrollada con **ASP.NET Core**, **Entity Framework Core**, **SQLite**, **Groq IA** y consumo de **APIs externas** mediante **HttpClient**.
 ---
 ## Documentación Y Pruebas Funcionales
 </div>
