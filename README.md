@@ -40,7 +40,7 @@ API REST desarrollada con **ASP.NET Core**, **Entity Framework Core**, **SQLite*
 
 ---
 
-# Sistema Inteligente de Reportes Ciudadanos con IA
+# 1. Sistema Inteligente de Reportes Ciudadanos con IA
 
 API REST desarrollada con **ASP.NET Core 8** para la gestión de reportes ciudadanos relacionados con problemáticas urbanas, incorporando **Inteligencia Artificial mediante la API de Groq**, servicios externos de geocodificación y persistencia de información mediante una base de datos relacional.
 
@@ -48,9 +48,9 @@ El sistema está orientado al registro, consulta, actualización, eliminación y
 
 ---
 
-## Descripción del proyecto
+## 1.1 Descripción del proyecto
 
-### Información general
+### 1.2 Información General del Proyecto
 
 **Nombre del sistema:** Sistema Inteligente de Reportes Ciudadanos con IA
 
@@ -85,15 +85,15 @@ Adicionalmente, el sistema integra una API externa de geocodificación para comp
 
 ---
 
-## Objetivo
+## 2. Objetivo
 
-### Objetivo general
+### 2.1 Objetivo general
 
 Desarrollar una API REST denominada **Sistema Inteligente de Reportes Ciudadanos con Inteligencia Artificial**, orientada a la gestión eficiente de reportes relacionados con problemáticas urbanas, permitiendo registrar, consultar, actualizar, eliminar y analizar automáticamente la información mediante Inteligencia Artificial.
 
 La solución busca contribuir al mejoramiento de la administración de los espacios públicos y apoyar el cumplimiento del **Objetivo de Desarrollo Sostenible (ODS) 11: Ciudades y Comunidades Sostenibles**.
 
-### Objetivos específicos
+### 2.2 Objetivos específicos
 
 #### OE-01. Gestionar reportes ciudadanos
 
@@ -130,19 +130,19 @@ Construir la solución siguiendo principios de separación de responsabilidades,
 
 ---
 
-## Contexto y ODS 11 – Ciudades y Comunidades Sostenibles
+## 3. Contexto y ODS 11 – Ciudades y Comunidades Sostenibles
 
 El proyecto se desarrolla tomando como referencia el **Objetivo de Desarrollo Sostenible (ODS) 11: Ciudades y Comunidades Sostenibles**.
 
 El sistema plantea una solución tecnológica orientada a digitalizar el proceso de registro y administración de problemáticas presentes en el entorno urbano.
 
-### Relación del proyecto con el ODS 11
+### 3.1 Relación del proyecto con el ODS 11
 
 El proyecto contribuye al ODS 11 mediante una plataforma que centraliza los reportes ciudadanos y permite que estos sean posteriormente analizados y organizados.
 
 La integración de Inteligencia Artificial permite automatizar parte del proceso de clasificación y priorización de los reportes.
 
-### Contribución tecnológica
+### 3.2 Contribución tecnológica
 
 #### Centralización de la información
 
@@ -167,11 +167,11 @@ El sistema proporciona mecanismos de búsqueda y filtrado para consultar los rep
 
 ---
 
-## Alcance del proyecto
+## 3.3 Alcance del proyecto
 
 El proyecto comprende el desarrollo de una **API REST** capaz de gestionar integralmente el ciclo de vida de los reportes ciudadanos.
 
-### Funcionalidades incluidas
+### 4. Funcionalidades incluidas
 
 #### Gestión de reportes
 
@@ -219,7 +219,7 @@ El proyecto contempla:
 - Manejo de errores.
 - Arquitectura modular basada en ASP.NET Core 8.
 
-### Funcionalidades fuera del alcance
+### 4.1 Funcionalidades fuera del alcance
 
 La versión inicial no contempla:
 
@@ -234,7 +234,7 @@ Estas funcionalidades podrán considerarse como mejoras para futuras versiones.
 
 ---
 
-## Características principales
+## 5. Características principales
 
 | Característica | Descripción |
 |---|---|
@@ -254,7 +254,7 @@ Estas funcionalidades podrán considerarse como mejoras para futuras versiones.
 
 ---
 
-## Público objetivo
+### Público objetivo
 
 ### Ciudadanos
 
@@ -266,7 +266,7 @@ Organizaciones o dependencias encargadas del mantenimiento y gestión del espaci
 
 ---
 
-## Justificación del proyecto
+### Justificación del proyecto
 
 El crecimiento constante de las ciudades incrementa la necesidad de contar con mecanismos tecnológicos que permitan registrar y administrar de manera organizada las problemáticas presentes en el entorno urbano.
 
@@ -286,15 +286,15 @@ Desde el punto de vista académico, el proyecto permite integrar conocimientos r
 
 ---
 
-## Valor agregado del proyecto
+## 6. Valor agregado del proyecto
 
 El principal valor agregado consiste en la integración de Inteligencia Artificial para interpretar automáticamente la descripción proporcionada por el ciudadano, identificar la naturaleza del problema y asignar una prioridad.
 
 Además, la integración con servicios externos permite enriquecer la información geográfica de los reportes.
 
-# Requerimientos del sistema
+# 7. Requerimientos del sistema
 
-## Requerimientos Funcionales y No Funcionales
+## 7.1 Requerimientos Funcionales y No Funcionales
 
 Los requerimientos del sistema definen las funcionalidades que debe proporcionar la API y las características técnicas y de calidad que debe cumplir la solución.
 
@@ -305,7 +305,7 @@ Se clasifican en:
 
 ---
 
-### Requerimientos Funcionales
+### 7.2 Requerimientos Funcionales
 
 Los requerimientos funcionales definidos inicialmente en la Fase 1 fueron contrastados con la implementación documentada en la Fase 2 y las pruebas funcionales ejecutadas en la Fase 3.
 
@@ -340,33 +340,45 @@ Por esta razón, el análisis no se ejecuta automáticamente dentro de la operac
 
 ---
 
-## Requerimientos No Funcionales
+## 7.3 Requerimientos No Funcionales
 
 Los requerimientos no funcionales establecen las características técnicas y de calidad que debe cumplir el sistema durante su implementación y operación.
 
-| ID | Requerimiento no funcional | Categoría | Estado |
-|---|---|---|---|
-| RNF-01 | La API deberá desarrollarse utilizando ASP.NET Core 8 y C#. | Plataforma | Planificado |
-| RNF-02 | El acceso a la base de datos deberá implementarse mediante Entity Framework Core. | Persistencia | Planificado |
-| RNF-03 | La información deberá almacenarse de forma persistente utilizando SQLite durante el desarrollo. | Base de datos | Planificado |
-| RNF-04 | La comunicación entre servicios deberá realizarse utilizando el protocolo HTTP y datos en formato JSON. | Interoperabilidad | Planificado |
-| RNF-05 | La integración con Groq deberá realizarse mediante HttpClient. | Integración | Planificado |
-| RNF-06 | La integración con la API de geocodificación deberá realizarse mediante HttpClient. | Calidad | Planificado |
-| RNF-08 | La API deberá documentarse mediante Swagger/OpenAPI. | Documentación | Planificado |
-| RNF-09 | El código deberá organizarse siguiendo una arquitectura modular y orientada a servicios. | Arquitectura | Planificado |
-| RNF-10 | El sistema deberá implementar DTOs para la transferencia de información entre la API y los consumidores. | Diseño | Planificado |
-| RNF-11 | El sistema deberá manejar adecuadamente las excepciones y devolver códigos HTTP apropiados. | Robustez | Planificado |
-| RNF-12 | El proyecto deberá mantenerse bajo control de versiones mediante Git y GitHub. | Gestión | Planificado |
+Los requerimientos no funcionales definidos en la Fase 1 fueron contrastados con la arquitectura, tecnologías y componentes documentados durante la Fase 2 y con la implementación validada durante la Fase 3.
 
-> **Nota:** La numeración de los requerimientos se conserva de acuerdo con la documentación original de la Fase 1. Por esta razón, después de `RNF-06` aparece `RNF-08`.
+| ID | Requerimiento | Categoría | Estado final |
+|---|---|---|---|
+| **RNF-01** | La API deberá desarrollarse utilizando ASP.NET Core 8 y C#. | Plataforma | **Realizado** |
+| **RNF-02** | El acceso a la base de datos deberá implementarse mediante Entity Framework Core. | Persistencia | **Realizado** |
+| **RNF-03** | La información deberá almacenarse de forma persistente utilizando SQLite durante el desarrollo. | Base de datos | **Realizado** |
+| **RNF-04** | La comunicación entre servicios deberá realizarse mediante HTTP y datos en formato JSON. | Interoperabilidad | **Realizado** |
+| **RNF-05** | La integración con Groq deberá realizarse mediante `HttpClient`. | Integración | **Realizado** |
+| **RNF-06** | La integración con la API de geocodificación deberá realizarse mediante `HttpClient`. | Calidad | **Realizado** |
+| **RNF-07** | La API deberá documentarse mediante Swagger/OpenAPI. | Documentación | **Realizado** |
+| **RNF-08** | El código deberá organizarse siguiendo una arquitectura modular y orientada a servicios. | Arquitectura | **Realizado** |
+| **RNF-9** | El sistema deberá implementar DTOs para la transferencia de información entre la API y los consumidores. | Diseño | **Realizado** |
+| **RNF-10** | El sistema deberá manejar adecuadamente las excepciones y devolver códigos HTTP apropiados. | Robustez | **Realizado** |
+| **RNF-11** | El proyecto deberá mantenerse bajo control de versiones mediante Git y GitHub. | Gestión | **Realizado** |
+
+### Criterio de estados
+
+Para la consolidación final de los requerimientos se utilizaron los siguientes estados:
+
+| Estado | Significado |
+|---|---|
+| **Planificado** | Requerimiento definido inicialmente, pero sin implementación comprobada. |
+| **Realizado** | Requerimiento implementado y respaldado por la documentación técnica y/o evidencias de funcionamiento. |
+| **Parcialmente realizado** | La funcionalidad principal está implementada, pero presenta una diferencia respecto a la definición original del requerimiento. |
 
 ---
 
-# Tecnologías utilizadas
+# 8. Tecnologías utilizadas
+
+## 8.1 Descripcion
 
 El Sistema Inteligente de Reportes Ciudadanos con IA se desarrolla utilizando tecnologías del ecosistema .NET y servicios externos destinados a construir una API REST modular, mantenible y preparada para integrar capacidades de Inteligencia Artificial.
 
-## Stack tecnológico
+## 8.2  Stack tecnológico
 
 | Tecnología | Versión / Tipo | Función |
 |---|---|---|
@@ -384,7 +396,7 @@ El Sistema Inteligente de Reportes Ciudadanos con IA se desarrolla utilizando te
 
 ---
 
-## Descripción de las tecnologías
+## 8.3 Descripción de las tecnologías
 
 ### .NET 8
 
@@ -437,7 +449,7 @@ Herramientas utilizadas para el control de versiones, seguimiento de cambios y a
 
 ---
 
-# Integración de servicios externos
+# 8.4 Integración de servicios externos
 
 La solución contempla la integración con servicios externos para ampliar las capacidades de la API.
 
@@ -450,7 +462,7 @@ Las principales integraciones definidas son:
 
 ---
 
-## Integración con Groq
+## 8.5 Integración con Groq
 
 La API de Groq permite analizar automáticamente la información textual de los reportes ciudadanos.
 
