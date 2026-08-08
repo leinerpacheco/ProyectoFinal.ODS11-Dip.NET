@@ -803,7 +803,6 @@ ReportesCiudadanos.Api/
 ├── Interfaces/
 ├── Configurations/
 ├── Migrations/
-├── Helpers/
 ├── Validators/
 ├── Middlewares/
 │
@@ -811,8 +810,6 @@ ReportesCiudadanos.Api/
 ├── appsettings.json
 └── README.md
 ```
-
-> La estructura anterior representa en Markdown las carpetas y archivos principales documentados en la Fase 2. La captura visual original de la estructura del proyecto podrá incorporarse posteriormente como evidencia o referencia gráfica.
 
 ## 11.3 Descripción de Carpetas
 
@@ -826,7 +823,6 @@ ReportesCiudadanos.Api/
 | `Interfaces` | Define los contratos implementados por los servicios. |
 | `Configurations` | Contiene la configuración de servicios externos y opciones del sistema. |
 | `Migrations` | Contiene los archivos generados por Entity Framework Core para administrar el esquema de la base de datos. |
-| `Helpers` | Contiene funciones auxiliares reutilizables dentro del proyecto. |
 | `Validators` | Contiene las reglas de validación para los datos de entrada. |
 | `Middlewares` | Contiene componentes para el manejo global de excepciones y procesamiento de solicitudes. |
 
@@ -1230,7 +1226,6 @@ El servicio `ReporteService` concentra la lógica de negocio relacionada con los
 | Consultar por ID | Obtiene un reporte específico mediante su identificador. |
 | Actualizar | Modifica la información de un reporte existente. |
 | Eliminar | Elimina un reporte existente. |
-| Filtrar | Permite consultar reportes aplicando diferentes criterios. |
 
 ### Flujo de creación
 
@@ -1558,12 +1553,12 @@ ReporteService
    │              Resultado IA
    │
    └──────────────► GeocodingService
-                        │
-                        ▼
-                API de Geocodificación
-                        │
-                        ▼
-                 Datos geográficos
+   │                     │
+   │                     ▼
+   │             API de Geocodificación
+   │                     │
+   │                     ▼
+   │              Datos geográficos
    │
    ▼
 Base de Datos
@@ -2002,20 +1997,6 @@ GET /api/reportes/filtrar?estado=Pendiente&prioridad=Alta
 | `400` | Uno o más parámetros tienen un formato inválido. |
 | `500` | Error interno del servidor. |
 
-### Reglas de Filtrado
-
-| Código | Regla |
-|---|---|
-| `RF-01` | Todos los parámetros son opcionales. |
-| `RF-02` | Se podrán combinar múltiples filtros en una misma consulta. |
-| `RF-03` | Si no se envían parámetros, se devolverán todos los reportes. |
-| `RF-04` | Si la búsqueda no produce resultados, se devolverá una colección vacía (`[]`) con código `200 OK`. |
-
-### Observaciones
-
-- Los filtros serán implementados mediante consultas LINQ sobre Entity Framework Core.
-- El endpoint permitirá ampliar los criterios de búsqueda en futuras versiones sin modificar su estructura principal.
-
 ---
 
 # 19. Documentación de la API con Swagger (OpenAPI)
@@ -2066,9 +2047,7 @@ Durante la implementación del proyecto se contemplaron las siguientes evidencia
 | Endpoint GET funcionando | Validado |
 | Endpoint PUT funcionando | Validado |
 | Endpoint DELETE funcionando | Validado |
-| Endpoint de análisis con IA funcionando | Pendiente |
-
-> **Nota:** Estos estados corresponden a lo documentado en la Fase 2. Posteriormente serán contrastados con las pruebas reales de la Fase 3 y podrán actualizarse cuando exista evidencia de validación.
+| Endpoint de análisis con IA funcionando | Validado |
 
 ---
 
